@@ -1,0 +1,16 @@
+export enum LogType {
+    BUY_ITEM = 'buy_item',
+    SELL_ITEM = 'sell_item',
+    CREATE_ITEM = 'create_item',
+    DELETE_ITEM = 'delete_item',
+    UPDATE_ITEM = 'update_item',
+    REGISTRATION = 'registration',
+    LOGIN = 'login',
+    FORGOT_PASSWORD = 'forgot_password',
+    LOGOUT = 'logout',
+    MESSAGE_SENT = 'message_sent',
+    MESSAGE_RECEIVED = 'message_received',
+    ITEM_VIEWED = 'item_viewed',
+    ITEM_FAVORITED = 'item_favorited',
+    ITEM_UNFAVORITED = 'item_unfavorited',
+}
