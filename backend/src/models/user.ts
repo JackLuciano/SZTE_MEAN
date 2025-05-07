@@ -74,7 +74,7 @@ export class User {
         email: string,
         fullName: string,
         profilePicture: string
-    ): Promise<{ status: boolean; message: string; user?: User }> {
+    ): Promise<{ status: boolean; message: string; }> {
         const db = getDatabase();
 
         if (!email) return { status: false, message: 'Email is required.' };
@@ -96,7 +96,7 @@ export class User {
         });
 
         await db?.collection('users').insertOne(user);
-        return { status: true, message: 'User created successfully.', user };
+        return { status: true, message: 'User created successfully.' };
     }
 
     static async delete(id: string): Promise<boolean> {
