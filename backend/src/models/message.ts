@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Db, DeleteResult, ObjectId } from 'mongodb';
 import { MessageType } from '../data/messageTypes';
 
 import { getDatabase } from '../db';
@@ -31,13 +31,13 @@ export class Message {
     }
 
     async save(): Promise<void> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         await db?.collection('messages').updateOne({ _id: this._id }, { $set: this });
     } 
 
     async delete(): Promise<boolean> {
-        const db = getDatabase();
-        const result = await db?.collection('messages').deleteOne({ _id: this._id });
+        const db : (Db | null) = getDatabase();
+        const result : (DeleteResult | undefined) = await db?.collection('messages').deleteOne({ _id: this._id });
         return result?.deletedCount === 1;
     }
 
@@ -54,7 +54,7 @@ export class Message {
     }
 
     private static async getMessagesByField(field: 'senderId' | 'receiverId', id: ObjectId): Promise<Message[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const messages = await db?.collection('messages').find({ [field]: id }).toArray();
         return messages?.map(this.mapToMessage) || [];
     }
@@ -68,13 +68,13 @@ export class Message {
     }
 
     static async findById(messageId: ObjectId): Promise<Message | null> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const message = await db?.collection('messages').findOne({ _id: messageId });
         return message ? this.mapToMessage(message) : null;
     }
 
     static async getCurrentMessages(userId: ObjectId, targetId: ObjectId): Promise<Message[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const messages = await db?.collection('messages').find({
             $or: [
                 { senderId: userId, receiverId: targetId },
@@ -95,7 +95,7 @@ export class Message {
     }
 
     static async createMessage(userId: ObjectId, targetId: ObjectId, message: string, messageType: MessageType) : Promise<Message> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const newMessage = new Message({
             _id: new ObjectId(),
             senderId: userId,

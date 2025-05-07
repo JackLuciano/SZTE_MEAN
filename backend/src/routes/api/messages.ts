@@ -6,7 +6,7 @@ import { MessageType } from '../../data/messageTypes';
 const router = express.Router();
 
 router.get('/', async (req: express.Request, res: express.Response) => {
-    const userId = (req as any).user._id;
+    const userId : ObjectId = (req as any).user._id;
 
     const messages: Message[] = await Message.getAllMessages(userId);
 
@@ -14,8 +14,8 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 });
 
 router.get('/open', async (req: express.Request, res: express.Response) => {
-    const userId = (req as any).user._id;
-    const targetId = new ObjectId(req.params.targetId);
+    const userId : ObjectId = (req as any).user._id;
+    const targetId : ObjectId = new ObjectId(req.params.targetId);
 
     const messages: Message[] = await Message.getCurrentMessages(userId, targetId);
 
@@ -23,7 +23,7 @@ router.get('/open', async (req: express.Request, res: express.Response) => {
 });
 
 router.post('/', async (req: express.Request, res: express.Response) => {
-    const userId = (req as any).user._id;
+    const userId : ObjectId = (req as any).user._id;
     const { targetId, message, messageType } : { targetId: ObjectId; message: string; messageType: MessageType; } = req.body; 
 
     const newMessage: Message = await Message.createMessage(userId, targetId, message, messageType);
@@ -32,8 +32,8 @@ router.post('/', async (req: express.Request, res: express.Response) => {
 });
 
 router.post('/read/', async (req: express.Request, res: express.Response) => {
-    const userId = (req as any).user._id;
-    const messageId = new ObjectId(req.params.messageId);
+    const userId : ObjectId = (req as any).user._id;
+    const messageId : ObjectId = new ObjectId(req.params.messageId);
 
     const message: Message | null = await Message.findById(messageId);
     if (!message) {
@@ -54,8 +54,8 @@ router.post('/read/', async (req: express.Request, res: express.Response) => {
 });
 
 router.post('/delete/', async (req: express.Request, res: express.Response) => {
-    const userId = (req as any).user._id;
-    const messageId = new ObjectId(req.params.messageId);
+    const userId : ObjectId = (req as any).user._id;
+    const messageId : ObjectId = new ObjectId(req.params.messageId);
 
     const message: Message | null = await Message.findById(messageId);
     if (!message) {

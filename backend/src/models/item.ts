@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 import { getDatabase } from '../db';
 
 export class Item {
@@ -47,7 +47,7 @@ export class Item {
     }
 
     async save(): Promise<void> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         await db?.collection('items').updateOne({ _id: this._id }, { $set: this });
     }
 
@@ -70,31 +70,31 @@ export class Item {
     }
 
     static async findById(id: string): Promise<Item | null> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const item = await db?.collection('items').findOne({ _id: new ObjectId(id) });
         return item ? this.mapToItem(item) : null;
     }
 
     static async findByOwnerId(ownerId: string): Promise<Item[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const items = await db?.collection('items').find({ ownerId: new ObjectId(ownerId) }).toArray();
         return items ? items.map(this.mapToItem) : [];
     }
 
     static async findByCategory(category: string): Promise<Item[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const items = await db?.collection('items').find({ category }).toArray();
         return items ? items.map(this.mapToItem) : [];
     }
 
     static async findByTag(tag: string): Promise<Item[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const items = await db?.collection('items').find({ tags: tag }).toArray();
         return items ? items.map(this.mapToItem) : [];
     }
 
     static async getAllItems(): Promise<Item[]> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const items = await db?.collection('items').find( { isDeleted: false } ).toArray();
         return items ? items.map(this.mapToItem) : [];
     }
@@ -108,8 +108,7 @@ export class Item {
         tags: string[],
         location: string
     ): Promise<{ status: boolean; message: string; item?: Item }> {
-        const db = getDatabase();
-
+        const db : (Db | null) = getDatabase();
 
         if (!name) return { status: false, message: 'Name is required.' };
         if (!description) return { status: false, message: 'Description is required.' };

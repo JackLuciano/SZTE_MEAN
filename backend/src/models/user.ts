@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Db, DeleteResult, ObjectId } from 'mongodb';
 import { getDatabase } from '../db';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -35,7 +35,7 @@ export class User {
     }
 
     async save(): Promise<void> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         await db?.collection('users').updateOne({ _id: this._id }, { $set: this });
     }
 
@@ -44,8 +44,8 @@ export class User {
     }
 
     async delete(): Promise<boolean> {
-        const db = getDatabase();
-        const result = await db?.collection('users').deleteOne({ _id: new ObjectId(this._id) });
+        const db : (Db | null) = getDatabase();
+        const result : (DeleteResult | undefined) = await db?.collection('users').deleteOne({ _id: new ObjectId(this._id) });
         return result?.deletedCount === 1;
     }
 
@@ -62,19 +62,19 @@ export class User {
     }
 
     static async findByUsername(username: string): Promise<User | null> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const user = await db?.collection('users').findOne({ username });
         return user ? this.mapToUser(user) : null;
     }
 
     static async findById(id: string): Promise<User | null> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const user = await db?.collection('users').findOne({ _id: new ObjectId(id) });
         return user ? this.mapToUser(user) : null;
     }
 
     static async findByEmail(email: string): Promise<User | null> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
         const user = await db?.collection('users').findOne({ email });
         return user ? this.mapToUser(user) : null;
     }
@@ -86,7 +86,7 @@ export class User {
         fullName: string,
         profilePicture: string
     ): Promise<{ status: boolean; message: string; }> {
-        const db = getDatabase();
+        const db : (Db | null) = getDatabase();
 
         if (!email) return { status: false, message: 'Email is required.' };
         if (!email.includes('@')) return { status: false, message: 'Invalid email.' };
@@ -95,7 +95,7 @@ export class User {
         if (await this.findByUsername(username)) return { status: false, message: 'Username already exists.' };
         if (await this.findByEmail(email)) return { status: false, message: 'Email already exists.' };
 
-        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+        const hashedPassword : string = await bcrypt.hash(password, SALT_ROUNDS);
         const user = new User({
             _id: new ObjectId(),
             username,
@@ -111,11 +111,11 @@ export class User {
     }
 
     static async forgotPassword(email: string): Promise<{ status: boolean; message: string }> {
-        const user = await this.findByEmail(email);
+        const user : (User | null) = await this.findByEmail(email);
         if (!user) return { status: false, message: 'Email not found.' };
 
-        const db = getDatabase();
-        const newPassword = await bcrypt.hash('asd123', SALT_ROUNDS);
+        const db : (Db | null) = getDatabase();
+        const newPassword : string = await bcrypt.hash('asd123', SALT_ROUNDS);
 
         await db?.collection('users').updateOne(
             { _id: user._id },
