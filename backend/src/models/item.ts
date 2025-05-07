@@ -46,6 +46,11 @@ export class Item {
         this.isDeleted = item.isDeleted;
     }
 
+    async save(): Promise<void> {
+        const db = getDatabase();
+        await db?.collection('items').updateOne({ _id: this._id }, { $set: this });
+    }
+
     private static mapToItem(item: any): Item {
         return new Item({
             _id: item._id,
