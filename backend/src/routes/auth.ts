@@ -2,7 +2,8 @@ import express from 'express';
 
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
-import { SECRET } from '../index';
+import { SECRET } from '../config';
+import { middleware } from './protected';
 
 const router = express.Router();
 
@@ -18,7 +19,14 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
     }
 
     const token = jwt.sign({ userId: user._id }, SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ token, user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        profilePicture: user.profilePicture,
+        createdAt: user.createdAt,
+    } });
 });
 
 router.post('/register', async (req: express.Request, res: express.Response) => {
@@ -32,7 +40,7 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
 
     const { username, password, email, fullName, profilePicture }: { username: string; password: string; email: string, fullName: string; profilePicture: string; } = req.body;
 
-    const { status, message, user } = await User.create(username, password, email, fullName, profilePicture);
+    const { status, message } = await User.create(username, password, email, fullName, profilePicture);
     if (!status) {
         res.status(400).json({ message });
 
@@ -42,15 +50,8 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
     res.status(201).json({ message });
 });
 
-router.post('/logout', (req: express.Request, res: express.Response) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-
-    if (!token) {
-        res.status(401).json({ message: 'Unauthorized' });
-
-        return;
-    }
+router.post('/logout', middleware, (req: express.Request, res: express.Response) => {
+    // TODO CHANGE ONLINE STATUS TO FALSE LATER ON
 
     res.json({ message: 'Successfully logged out.' });
 });
@@ -81,6 +82,20 @@ router.post('/forgot-password', async (req: express.Request, res: express.Respon
 
     await User.forgotPassword(email);
     res.json({ message: 'Password reset email sent. Check your inbox. (new password is asd123)' });
+});
+
+router.post('/delete-account', middleware, async (req: express.Request, res: express.Response) => {
+    const user = (req as any).user;
+    const userId = user.userId;
+
+    if (!userId) {
+        res.status(401).json({ message: 'Unauthorized' });
+
+        return;
+    }
+
+    await User.delete(userId);
+    res.json({ message: 'Account deleted successfully.' });
 });
 
 export default router;
