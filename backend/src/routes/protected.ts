@@ -1,3 +1,4 @@
+
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -7,7 +8,7 @@ dotenv.config();
 const router = express.Router();
 const SECRET = process.env.JWT_SECRET as string;
 
-router.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const middleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const authHeader: string | undefined = req.headers['authorization'];
     const token: string | undefined = authHeader?.split(' ')[1];
 
@@ -37,7 +38,9 @@ router.use((req: express.Request, res: express.Response, next: express.NextFunct
     // For testing purposes, remove in production
     // (req as any).user = { userId: 'testUserId' }; // For testing purposes, remove in production
     // next();
-});
+}
+
+router.use(middleware);
 
 router.get('/test', (req: express.Request, res: express.Response) => {
     const user = (req as any).user;
