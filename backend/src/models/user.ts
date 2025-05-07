@@ -34,8 +34,19 @@ export class User {
         this.profilePicture = user.profilePicture;
     }
 
+    async save(): Promise<void> {
+        const db = getDatabase();
+        await db?.collection('users').updateOne({ _id: this._id }, { $set: this });
+    }
+
     async validatePassword(password: string): Promise<boolean> {
         return bcrypt.compare(password, this.password);
+    }
+
+    async delete(): Promise<boolean> {
+        const db = getDatabase();
+        const result = await db?.collection('users').deleteOne({ _id: new ObjectId(this._id) });
+        return result?.deletedCount === 1;
     }
 
     private static mapToUser(user: any): User {
@@ -97,12 +108,6 @@ export class User {
 
         await db?.collection('users').insertOne(user);
         return { status: true, message: 'User created successfully.' };
-    }
-
-    static async delete(id: string): Promise<boolean> {
-        const db = getDatabase();
-        const result = await db?.collection('users').deleteOne({ _id: new ObjectId(id) });
-        return result?.deletedCount === 1;
     }
 
     static async forgotPassword(email: string): Promise<{ status: boolean; message: string }> {

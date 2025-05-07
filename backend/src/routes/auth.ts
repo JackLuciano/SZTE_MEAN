@@ -94,7 +94,7 @@ router.post('/delete-account', middleware, async (req: express.Request, res: exp
         return;
     }
 
-    await User.delete(userId);
+    await user.delete();
     res.json({ message: 'Account deleted successfully.' });
 });
 
