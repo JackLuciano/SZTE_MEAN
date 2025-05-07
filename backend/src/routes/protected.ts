@@ -1,13 +1,9 @@
 
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { SECRET } from '../config';
 
 const router = express.Router();
-const SECRET = process.env.JWT_SECRET as string;
-
 export const middleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const authHeader: string | undefined = req.headers['authorization'];
     const token: string | undefined = authHeader?.split(' ')[1];
