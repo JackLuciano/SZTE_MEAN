@@ -1,32 +1,35 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import { app, PORT } from './config';
 import { connectToDatabase } from './db';
-import { User } from './models/user';
-import protectedRoutes from './routes/protected';
-import jwt from 'jsonwebtoken';
+
 import authRoutes from './routes/auth';
+import protectedRoutes from './routes/protected';
+import categoriesRoute from './routes/api/categories';
+import itemsRoute from './routes/api/items';
+import messagesRoute from './routes/api/messages';
 
-dotenv.config();
+const registerRoutes = () => {
+    const routes = [
+        { path: '/auth', handler: authRoutes },
+        { path: '/api', handler: protectedRoutes },
+        { path: '/api/messages', handler: messagesRoute },
+        { path: '/categories', handler: categoriesRoute },
+        { path: '/items', handler: itemsRoute },
+    ];
 
-export const app = express();
+    routes.forEach(({ path, handler }) => app.use(path, handler));
+};
 
-const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
-export const SECRET: string = process.env.JWT_SECRET as string;
-
-app.use(cors());
-app.use(bodyParser.json());
-
-app.use('/auth', authRoutes);
-app.use('/api', protectedRoutes);
-
-connectToDatabase()
-    .then(() => {
+const startServer = async () => {
+    try {
+        await connectToDatabase();
+        registerRoutes();
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
-    })
-    .catch((err) => {
+    } catch (err) {
         console.error('Failed to connect to database:', err);
-    });
+        process.exit(1);
+    }
+};
+
+startServer();
