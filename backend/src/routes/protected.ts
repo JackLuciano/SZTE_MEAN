@@ -18,16 +18,16 @@ export const middleware = (req: express.Request, res: express.Response, next: ex
         if (err) {
             res.status(403).json({ message: 'Forbidden' });
 
-            return
+            return;
         }
-        
-        if (!user) {
+
+        if (!user || typeof user === 'string' || !(user as jwt.JwtPayload).userId) {
             res.status(401).json({ message: 'Unauthorized' });
 
             return;
         }
 
-        (req as any).user = user;
+        (req as any).user = user as jwt.JwtPayload;
         next();
     });
 
