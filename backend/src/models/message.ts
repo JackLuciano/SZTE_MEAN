@@ -30,6 +30,17 @@ export class Message {
         this.readAt = message.readAt;
     }
 
+    async save(): Promise<void> {
+        const db = getDatabase();
+        await db?.collection('messages').updateOne({ _id: this._id }, { $set: this });
+    } 
+
+    async delete(): Promise<boolean> {
+        const db = getDatabase();
+        const result = await db?.collection('messages').deleteOne({ _id: this._id });
+        return result?.deletedCount === 1;
+    }
+
     private static mapToMessage(message: any): Message {
         return new Message({
             _id: message._id,
@@ -56,6 +67,24 @@ export class Message {
         return this.getMessagesByField('receiverId', receiverId);
     }
 
+    static async findById(messageId: ObjectId): Promise<Message | null> {
+        const db = getDatabase();
+        const message = await db?.collection('messages').findOne({ _id: messageId });
+        return message ? this.mapToMessage(message) : null;
+    }
+
+    static async getCurrentMessages(userId: ObjectId, targetId: ObjectId): Promise<Message[]> {
+        const db = getDatabase();
+        const messages = await db?.collection('messages').find({
+            $or: [
+                { senderId: userId, receiverId: targetId },
+                { senderId: targetId, receiverId: userId },
+            ],
+        }).toArray();
+
+        return messages?.map(this.mapToMessage) || [];
+    }
+
     static async getAllMessages(userId: ObjectId): Promise<Message[]> {
         const [sentMessages, receivedMessages] = await Promise.all([
             this.getBySenderId(userId),
@@ -63,5 +92,21 @@ export class Message {
         ]);
 
         return [...sentMessages, ...receivedMessages];
+    }
+
+    static async createMessage(userId: ObjectId, targetId: ObjectId, message: string, messageType: MessageType) : Promise<Message> {
+        const db = getDatabase();
+        const newMessage = new Message({
+            _id: new ObjectId(),
+            senderId: userId,
+            receiverId: targetId,
+            message,
+            messageType,
+            createdAt: new Date(),
+            readAt: null,
+        });
+
+        await db?.collection('messages').insertOne(newMessage);
+        return newMessage;
     }
 }
