@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 import { SECRET } from '../config';
 import { middleware } from './protected';
+import { UploadedFile } from 'express-fileupload';
 
 const router = express.Router();
 
@@ -19,11 +20,12 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
     }
 
     const token = jwt.sign({ userId: user._id }, SECRET, { expiresIn: '1h' });
-    res.json({ token, user: {
+    res.status(200).json({ token, user: {
         _id: user._id,
         username: user.username,
         email: user.email,
-        fullName: user.fullName,
+        firstName: user.firstName,
+        secondName: user.secondName,
         profilePicture: user.profilePicture,
         createdAt: user.createdAt,
     } });
@@ -38,9 +40,11 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
         return;
     }
 
-    const { username, password, email, fullName, profilePicture }: { username: string; password: string; email: string, fullName: string; profilePicture: string; } = req.body;
 
-    const { status, message } = await User.create(username, password, email, fullName, profilePicture);
+    const picture = req.files?.profilePicture as UploadedFile;
+
+    const { username, password, email, firstName, secondName } : { username: string; password: string; email: string; firstName: string; secondName: string; } = req.body;
+    const { status, message } = await User.create(username, password, email, firstName, secondName, picture);
     if (!status) {
         res.status(400).json({ message });
 
