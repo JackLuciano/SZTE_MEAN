@@ -1,0 +1,14 @@
+@if (serverStatus) {
+    <div>
+      <app-header></app-header>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+} @else {
+    <div class="loading-screen">
+      <div class="loader"></div>
+      <p>Waiting for server response...</p>
+    </div>
+}
+  

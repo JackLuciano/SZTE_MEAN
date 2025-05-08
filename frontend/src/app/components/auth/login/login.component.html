@@ -1,0 +1,32 @@
+<div class="login-wrapper">
+    <div class="login-box">
+        <h2>Login</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Username / e-mail address</label>
+                <input
+                    type="username"
+                    id="username"
+                    formControlName="username"
+                    placeholder="Username"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    formControlName="password"
+                    placeholder="Password"
+                />
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <button type="submit" (click)="forgotPassword()" class="forgot-password-btn">Forgot password</button>
+  
+        <div class="error-message">{{ message }}</div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="registration-wrapper">
+    <div class="registration-box">
+        <h2>Registration</h2>
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                    type="username"
+                    id="username"
+                    formControlName="username"
+                    placeholder="Username"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    placeholder="Email address"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input
+                    type="username"
+                    id="firstName"
+                    formControlName="firstName"
+                    placeholder="First name"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="secondName">Second name</label>
+                <input
+                    type="username"
+                    id="secondName"
+                    formControlName="secondName"
+                    placeholder="Second name"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    formControlName="password"
+                    placeholder="Password"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Password (2x)</label>
+                <input
+                    type="password"
+                    id="password2"
+                    formControlName="password2"
+                    placeholder="Password (2x)"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="profilePicture">Profile picture</label>
+                <input
+                  type="file"
+                  id="profilePicture"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                />
+              </div>
+
+            <button type="submit">registration</button>
+        </form>
+  
+        <div class="error-message">{{ message }}</div>
+    </div>
+</div>
