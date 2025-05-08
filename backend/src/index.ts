@@ -1,6 +1,7 @@
 import { app, PORT } from './config';
 import { connectToDatabase } from './db';
 
+import healthRoute from './routes/health';
 import authRoutes from './routes/auth';
 import protectedRoutes from './routes/protected';
 import categoriesRoute from './routes/api/categories';
@@ -11,6 +12,7 @@ import profileRoute from './routes/api/profile';
 
 const registerRoutes = () => {
     const routes = [
+        { path: '/health', handler: healthRoute },
         { path: '/auth', handler: authRoutes },
         { path: '/api', handler: protectedRoutes },
         { path: '/api/messages', handler: messagesRoute },
