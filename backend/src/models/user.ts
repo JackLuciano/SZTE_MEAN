@@ -2,6 +2,9 @@ import { Db, DeleteResult, ObjectId } from 'mongodb';
 import { getDatabase } from '../db';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { UploadedFile } from 'express-fileupload';
+import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -13,8 +16,10 @@ export class User {
     password: string;
     email: string;
     createdAt: Date;
-    fullName: string;
+    firstName: string;
+    secondName: string;
     profilePicture: string;
+    role: string = 'user';
 
     constructor(user: {
         _id: ObjectId;
@@ -22,16 +27,20 @@ export class User {
         password: string;
         email: string;
         createdAt: Date;
-        fullName: string;
+        firstName: string;
+        secondName: string;
         profilePicture: string;
+        role?: string;
     }) {
         this._id = user._id;
         this.username = user.username;
         this.password = user.password;
         this.email = user.email;
         this.createdAt = user.createdAt;
-        this.fullName = user.fullName;
+        this.firstName = user.firstName;
+        this.secondName = user.secondName;
         this.profilePicture = user.profilePicture;
+        this.role = user.role || 'user';
     }
 
     async save(): Promise<void> {
@@ -56,7 +65,8 @@ export class User {
             password: user.password,
             email: user.email,
             createdAt: user.createdAt,
-            fullName: user.fullName,
+            firstName: user.firstName,
+            secondName: user.secondName,
             profilePicture: user.profilePicture,
         });
     }
@@ -83,8 +93,9 @@ export class User {
         username: string,
         password: string,
         email: string,
-        fullName: string,
-        profilePicture: string
+        firstName: string,
+        secondName: string,
+        picture: UploadedFile | null
     ): Promise<{ status: boolean; message: string; }> {
         const db : (Db | null) = getDatabase();
 
@@ -92,18 +103,36 @@ export class User {
         if (!email.includes('@')) return { status: false, message: 'Invalid email.' };
         if (password.length < 6) return { status: false, message: 'Password must be at least 6 characters long.' };
 
+        if (!firstName) return { status: false, message: 'First name is required.' };
+        if (!secondName) return { status: false, message: 'Second name is required.' };
+
         if (await this.findByUsername(username)) return { status: false, message: 'Username already exists.' };
         if (await this.findByEmail(email)) return { status: false, message: 'Email already exists.' };
 
+        const userId : ObjectId = new ObjectId();
+        let fileName : string | null;
+        if (picture) {
+            const extension = path.extname(picture.name);
+            fileName = `${userId}${extension}`;
+            const uploadPath : string = path.join(__dirname, '../uploads/profile', fileName);
+
+            if (!fs.existsSync(path.join(__dirname, '../uploads/profile'))) {
+                fs.mkdirSync(path.join(__dirname, '../uploads/profile'));
+            }
+
+            picture.mv(uploadPath);
+        }
+
         const hashedPassword : string = await bcrypt.hash(password, SALT_ROUNDS);
         const user = new User({
-            _id: new ObjectId(),
+            _id: userId,
             username,
             password: hashedPassword,
             email,
             createdAt: new Date(),
-            fullName,
-            profilePicture: profilePicture,
+            firstName,
+            secondName,
+            profilePicture: fileName! ? `/uploads/${fileName}` : "",
         });
 
         await db?.collection('users').insertOne(user);
