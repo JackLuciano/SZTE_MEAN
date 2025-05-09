@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 import { CommonModule } from '@angular/common';
@@ -18,11 +18,21 @@ export class HeaderComponent implements OnInit {
 
   routes: any[] = [];
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
 
   ngOnInit() : void {
     this.authService.authenticated$.subscribe((authenticated: boolean) => {
       this.isAuthenticated = authenticated;
+
+      if (!authenticated) {
+        const currentRoute = this.router.url;
+
+        this.routes.forEach((route) => {
+          if (route.routerLink === currentRoute && !route.show()) {
+            this.router.navigate(['/']);
+          }
+        })
+      }
     });
 
     this.authService.userRole$.subscribe((role) => {
@@ -33,9 +43,9 @@ export class HeaderComponent implements OnInit {
       { name: '🏠 Home', routerLink: '/' },
       { name: '🔐 Login', routerLink: '/login', show: () => !this.isAuthenticated },
       { name: '📝 Register', routerLink: '/register', show: () => !this.isAuthenticated },
-      { name: '➕ New sale', show: () => this.isAuthenticated },
-      { name: '📦 My items', show: () => this.isAuthenticated },
-      { name: '👤 My profile', show: () => this.isAuthenticated },
+      { name: '➕ New item', routerLink: '/new-item', show: () => this.isAuthenticated },
+      { name: '📦 My items', routerLink: '/my-items', show: () => this.isAuthenticated },
+      { name: '👤 My profile', routerLink: '/my-profile', show: () => this.isAuthenticated },
       { name: '🚪 Logout', click: () => this.logout(), show: () => this.isAuthenticated }
     ];
   }
