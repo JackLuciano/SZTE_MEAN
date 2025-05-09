@@ -24,4 +24,13 @@ export const routes: Routes = [
         canActivate: [redirectIfLoggedInGuard],
         loadComponent: () => import('./components/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
     },
+    {
+        path: "item",
+        pathMatch: "full",
+        redirectTo: "/",
+    },
+    {
+        path: 'item/:id',
+        loadComponent: () => import('./components/item-display/item-display.component').then(m => m.ItemDisplayComponent),
+    }
 ];

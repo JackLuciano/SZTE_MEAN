@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ServerStatusService } from './services/server-status.service';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
+import { Title } from '@angular/platform-browser';
+import { SITE_NAME } from './app.config';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,7 @@ import { HeaderComponent } from './components/header/header.component';
 export class AppComponent implements OnInit {
   serverStatus: boolean = false;
 
-  constructor(private serverStatusService: ServerStatusService) { }
+  constructor(private serverStatusService: ServerStatusService, private titleService: Title) { }
 
   ngOnInit() : void {
     this.serverStatusService.getServerStatus().subscribe((status) => {
@@ -21,8 +23,10 @@ export class AppComponent implements OnInit {
       console.log('Server status changed to:', status);
     });
 
+    this.titleService.setTitle(SITE_NAME);
+
     // REMOVE THIS AFTER TESTING
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('token');
+    // localStorage.removeItem('userRole');
+    // localStorage.removeItem('token');
   }
 }

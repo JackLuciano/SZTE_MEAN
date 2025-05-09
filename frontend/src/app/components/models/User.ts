@@ -1,5 +1,5 @@
 export class User {
-    userId: number;
+    userId: string;
     username: string;
     password: string;
     email: string;
@@ -7,16 +7,20 @@ export class User {
     secondName: string;
     profilePicture: string;
     onlineStatus: boolean;
+    balance: number = 0;
+    role: string = 'user';
 
     constructor(
-        userId: number,
+        userId: string,
         username: string,
         password: string,
         email: string,
         firstName: string,
         secondName: string,
         profilePicture: string,
-        onlineStatus: boolean
+        onlineStatus: boolean,
+        balance: number = 0,
+        role: string = 'user'
     ) {
         this.userId = userId;
         this.username = username;
@@ -26,6 +30,8 @@ export class User {
         this.secondName = secondName;
         this.profilePicture = profilePicture;
         this.onlineStatus = onlineStatus;
+        this.balance = balance;
+        this.role = role;
     }
 
     static fromJson(json: any): User {

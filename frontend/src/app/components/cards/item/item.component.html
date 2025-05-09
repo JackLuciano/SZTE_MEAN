@@ -1,0 +1,12 @@
+<div class="card">
+    <img [src]="'https://p1.liveauctioneers.com/dist/images/placeholder.jpg'" alt="image" class="img" />
+    <div class="info">
+        <h3>{{ item!.name }}</h3>
+        <p>Price: <span class="price">${{ item!.price }}</span></p>
+        <p>Location: {{ item!.location }}</p>
+    </div>
+
+    <div class="action">
+        <button (click)="openItem(item!._id)">View</button>
+    </div>
+</div>

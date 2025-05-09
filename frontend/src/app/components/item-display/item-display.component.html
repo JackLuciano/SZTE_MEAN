@@ -1,0 +1,54 @@
+@if (!item) {
+    <div class="loading-screen">
+        <div class="loader"></div>
+        <p>Waiting for server response...</p>
+    </div>
+} @else {
+    <div class="wrapper">
+        <div class="item-container">
+            <div class="images">
+                <img [src]="'https://p1.liveauctioneers.com/dist/images/placeholder.jpg'" alt="image" class="img" />
+            </div>
+            <div class="informations">
+                <div class="name">
+                    <div class="background">
+                        <p>{{ item!.name }}</p>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="background">
+                        <p>{{ item!.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="price">
+                <div class="background">
+                    <p>${{ item!.price }}</p>
+                </div>
+            </div>
+            <div class="tags">
+                @for (tag of item!.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                }
+                <span class="tag">Category: {{ item!.category.name }}</span>
+                <span class="tag">Location: {{ item!.location }}</span>
+            </div>
+            <div class="buttons">
+                <button class="message">
+                    <i class="icon">✉️</i>
+                    <span>Message the seller</span>
+                </button>
+                <button class="buy">
+                    <i class="icon">🛒</i>
+                    <span>Buy now</span>
+                </button>
+            </div>
+            <div class="created-at">
+                Created at: {{ item!.createdAt | hungarianDate }}<br>
+                Last modified at: {{ item!.lastUpdated | hungarianDate }}
+            </div>
+            <!-- <div class="last-modified-at">Last modified at: {{ item!.createdAt | hungarianDate }}</div> -->
+        </div>
+    </div>
+}
+

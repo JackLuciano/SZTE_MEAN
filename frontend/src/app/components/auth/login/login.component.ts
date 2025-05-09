@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '../../models/User';
 import { AuthService } from '../../../services/auth.service';
 import { API_URL } from '../../../app.config';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-login',

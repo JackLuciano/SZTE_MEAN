@@ -3,10 +3,19 @@
       <div class="logo" routerLink="/">{{ shopName }}</div>
   
       <nav class="nav-links" [class.open]="menuOpen">
-        <a routerLink="/">Home</a>
-        <a routerLink="/login" *ngIf="!isAuthenticated">Login</a>
-        <a routerLink="/register" *ngIf="!isAuthenticated">Register</a>
-        <a (click)="logout()" *ngIf="isAuthenticated">Logout</a>
+        @for (route of routes; track route.name) {
+          @if (!route.show || route.show()) {
+            @if (route.routerLink) {
+              <a [routerLink]="route.routerLink">
+                {{ route.name }}
+              </a>
+            } @else {
+              <a (click)="route.click?.()">
+                {{ route.name }}
+              </a>
+            }
+          }
+        }
       </nav>
   
       <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Toggle menu">
