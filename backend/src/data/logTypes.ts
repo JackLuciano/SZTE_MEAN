@@ -7,6 +7,7 @@ export enum LogType {
     REGISTRATION = 'registration',
     LOGIN = 'login',
     FORGOT_PASSWORD = 'forgot_password',
+    DELETE_ACCOUNT = 'delete_account',
     LOGOUT = 'logout',
     MESSAGE_SENT = 'message_sent',
     MESSAGE_RECEIVED = 'message_received',

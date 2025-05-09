@@ -6,12 +6,18 @@ const router = express.Router();
 router.get('/', async (req: express.Request, res: express.Response) => {
     const items: Item[] = await Item.getAllItems();
 
-    // if (!items || items.length === 0) {
-    //     const response = await Item.create("test", "description", 100, [], "clothing", ["asd", "asd123"], "Hungary");
-    //     console.log(response)
-    // }
-
     res.json(items);
+});
+
+router.get('/:id', async (req: express.Request, res: express.Response) => {
+    const item : Item | null = await Item.findById(req.params.id);
+    if (!item) {
+        res.status(404).json({ message: 'Item not found' });
+
+        return;
+    }
+
+    res.json(item);
 });
 
 export default router;

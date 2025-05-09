@@ -5,6 +5,8 @@ import { User } from '../models/user';
 import { SECRET } from '../config';
 import { middleware } from './protected';
 import { UploadedFile } from 'express-fileupload';
+import { addLog } from '../models/log';
+import { LogType } from '../data/logTypes';
 
 const router = express.Router();
 
@@ -29,6 +31,12 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
         profilePicture: user.profilePicture,
         createdAt: user.createdAt,
     } });
+
+    addLog(LogType.LOGIN, user._id, [
+        { username: user.username },
+        { ip: req.ip },
+        { userAgent: req.headers['user-agent'] },
+    ]);
 });
 
 router.post('/register', async (req: express.Request, res: express.Response) => {
@@ -44,7 +52,7 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
     const picture = req.files?.profilePicture as UploadedFile;
 
     const { username, password, email, firstName, secondName } : { username: string; password: string; email: string; firstName: string; secondName: string; } = req.body;
-    const { status, message } = await User.create(username, password, email, firstName, secondName, picture);
+    const { status, message, user } = await User.create(username, password, email, firstName, secondName, picture);
     if (!status) {
         res.status(400).json({ message });
 
@@ -52,6 +60,12 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
     }
 
     res.status(201).json({ message });
+
+    addLog(LogType.REGISTRATION, user!._id, [
+        { username: username },
+        { ip: req.ip },
+        { userAgent: req.headers['user-agent'] },
+    ]);
 });
 
 router.post('/logout', middleware, (req: express.Request, res: express.Response) => {
@@ -86,6 +100,12 @@ router.post('/forgot-password', async (req: express.Request, res: express.Respon
 
     await User.forgotPassword(email);
     res.json({ message: 'Password reset email sent. Check your inbox. (new password is asd123)' });
+
+    addLog(LogType.FORGOT_PASSWORD, user._id, [
+        { username: user.username },
+        { ip: req.ip },
+        { userAgent: req.headers['user-agent'] },
+    ]);
 });
 
 router.post('/delete-account', middleware, async (req: express.Request, res: express.Response) => {
@@ -100,6 +120,12 @@ router.post('/delete-account', middleware, async (req: express.Request, res: exp
 
     await user.delete();
     res.json({ message: 'Account deleted successfully.' });
+
+    addLog(LogType.DELETE_ACCOUNT, user._id, [
+        { username: user.username },
+        { ip: req.ip },
+        { userAgent: req.headers['user-agent'] },
+    ]);
 });
 
 export default router;

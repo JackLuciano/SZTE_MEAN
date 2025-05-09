@@ -58,14 +58,14 @@ export class Log {
     static async create(
         type: LogType,
         userId: ObjectId,
-        data: string
+        data: any
     ) : Promise<{ status: boolean; message: string }> {
         const db = getDatabase();
         const log = new Log({
             _id: new ObjectId(),
             type,
             userId,
-            data,
+            data: JSON.stringify(data),
             createdAt: new Date(),
         });
 
@@ -74,7 +74,7 @@ export class Log {
     }
 }
 
-export async function addLog(logType: LogType, userId: ObjectId, data: string): Promise<{ status: boolean; message: string; }> {
+export async function addLog(logType: LogType, userId: ObjectId, data: any): Promise<{ status: boolean; message: string; }> {
     return await Log.create(logType, userId, data);
 }
 

@@ -19,6 +19,7 @@ export class User {
     firstName: string;
     secondName: string;
     profilePicture: string;
+    balance: number = 0;
     role: string = 'user';
 
     constructor(user: {
@@ -30,6 +31,7 @@ export class User {
         firstName: string;
         secondName: string;
         profilePicture: string;
+        balance?: number;
         role?: string;
     }) {
         this._id = user._id;
@@ -41,6 +43,7 @@ export class User {
         this.secondName = user.secondName;
         this.profilePicture = user.profilePicture;
         this.role = user.role || 'user';
+        this.balance = user.balance || 0;
     }
 
     async save(): Promise<void> {
@@ -96,7 +99,7 @@ export class User {
         firstName: string,
         secondName: string,
         picture: UploadedFile | null
-    ): Promise<{ status: boolean; message: string; }> {
+    ): Promise<{ status: boolean; message: string; user?: User }> {
         const db : (Db | null) = getDatabase();
 
         if (!email) return { status: false, message: 'Email is required.' };
@@ -136,7 +139,7 @@ export class User {
         });
 
         await db?.collection('users').insertOne(user);
-        return { status: true, message: 'User created successfully.' };
+        return { status: true, message: 'User created successfully.', user: user };
     }
 
     static async forgotPassword(email: string): Promise<{ status: boolean; message: string }> {

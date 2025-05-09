@@ -106,6 +106,7 @@ export class Item {
         images: string[],
         category: string,
         tags: string[],
+        userId: ObjectId,
         location: string
     ): Promise<{ status: boolean; message: string; item?: Item }> {
         const db : (Db | null) = getDatabase();
@@ -127,7 +128,7 @@ export class Item {
             createdAt: new Date(),
             category,
             lastUpdated: new Date(),
-            ownerId: new ObjectId(),
+            ownerId: userId,
             location,
             tags,
             isSold: false,
