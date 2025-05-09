@@ -32,5 +32,10 @@ export const routes: Routes = [
     {
         path: 'item/:id',
         loadComponent: () => import('./components/item-display/item-display.component').then(m => m.ItemDisplayComponent),
+    },
+    {
+        path: "new-item",
+        canActivate: [tokenGuard],
+        loadComponent: () => import('./components/new-item/new-item.component').then(m => m.NewItemComponent),
     }
 ];
