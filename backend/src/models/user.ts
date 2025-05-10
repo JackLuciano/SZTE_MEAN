@@ -71,6 +71,8 @@ export class User {
             firstName: user.firstName,
             secondName: user.secondName,
             profilePicture: user.profilePicture,
+            balance: user.balance,
+            role: user.role,
         });
     }
 
@@ -136,6 +138,8 @@ export class User {
             firstName,
             secondName,
             profilePicture: fileName! ? `/uploads/${fileName}` : "",
+            balance: 0,
+            role: 'user',
         });
 
         await db?.collection('users').insertOne(user);

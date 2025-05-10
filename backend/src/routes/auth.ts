@@ -30,6 +30,9 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
         secondName: user.secondName,
         profilePicture: user.profilePicture,
         createdAt: user.createdAt,
+        balance: user.balance,
+        onlineStatus: true,
+        role: user.role,
     } });
 
     addLog(LogType.LOGIN, user._id, [
