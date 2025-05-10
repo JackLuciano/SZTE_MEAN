@@ -10,11 +10,24 @@
         </ng-container>
     </div>
     <div class="items-container">
-        <ng-container *ngFor="let item of sortedItems">
-            <app-item class="item" 
-                [item]="item" 
-                >
-            </app-item>
-        </ng-container>
+        @if (loadingItems) {
+            <div class="loading-screen">
+                <div class="loader"></div>
+                <p>Loading items...</p>
+            </div>
+        } @else {
+            @if (sortedItems.length === 0) {
+                <div class="no-items">
+                    <p>No items found in this category.</p>
+                </div>
+            } @else {
+                <ng-container *ngFor="let item of sortedItems">
+                    <app-item class="item" 
+                        [item]="item" 
+                        >
+                    </app-item>
+                </ng-container>
+            }
+        }
     </div>
 </div>

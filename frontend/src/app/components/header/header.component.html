@@ -6,21 +6,28 @@
         @for (route of routes; track route.name) {
           @if (!route.show || route.show()) {
             @if (route.routerLink) {
-              <a [routerLink]="route.routerLink">
-                {{ route.name }}
+              <a [routerLink]="route.routerLink" class="nav-link">
+                <span class="nav-icon">{{ route.name.split(' ')[0] }}</span>
+                <span class="nav-text">{{ route.name.split(' ').slice(1).join(' ') }}</span>
               </a>
             } @else {
-              <a (click)="route.click?.()">
-                {{ route.name }}
+              <a (click)="route.click?.()" class="nav-link">
+                <span class="nav-icon">{{ route.name.split(' ')[0] }}</span>
+                <span class="nav-text">{{ route.name.split(' ').slice(1).join(' ') }}</span>
               </a>
             }
           }
         }
+        <div class="user-balance" *ngIf="isAuthenticated">
+          <span class="balance-amount">${{ user?.balance }}</span>
+          <span class="balance-label">Balance</span>
+        </div>
       </nav>
   
-      <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Toggle menu">
-        <span [class.active]="menuOpen"></span>
-      </button>
+      <div class="header-right">
+        <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Toggle menu">
+          <span [class.active]="menuOpen"></span>
+        </button>
+      </div>
     </div>
 </header>
-  

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 import { CommonModule } from '@angular/common';
 import { SITE_NAME } from '../../app.config';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ export class HeaderComponent implements OnInit {
   menuOpen: boolean = false;
   isAuthenticated: boolean = false;
   userRole: string | null = null;
+  user: User | null = null;
 
   routes: any[] = [];
 
@@ -39,6 +41,12 @@ export class HeaderComponent implements OnInit {
       this.userRole = role;
     });
 
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+
+      console.log('User:', user);
+    });
+
     this.routes = [
       { name: '🏠 Home', routerLink: '/' },
       { name: '🔐 Login', routerLink: '/login', show: () => !this.isAuthenticated },
@@ -48,6 +56,12 @@ export class HeaderComponent implements OnInit {
       { name: '👤 My profile', routerLink: '/my-profile', show: () => this.isAuthenticated },
       { name: '🚪 Logout', click: () => this.logout(), show: () => this.isAuthenticated }
     ];
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.menuOpen = false;
+      }
+    });
   }
 
   shopName: string = SITE_NAME;

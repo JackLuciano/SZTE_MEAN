@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
           
           this.authService.setToken(token);
           localStorage.setItem('user', JSON.stringify(user));
+          this.authService.setUser();
 
           this.message = "Successfully logged in! Redirecting to home page...";
 

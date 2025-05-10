@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   sortedItems: Item[] = [];
   categories : Category[] = categories;
   selectedCategory: Category = categories[0];
+  loadingItems: boolean = true;
 
   constructor(private authService: AuthService, private httpClient: HttpClient) {}
 
@@ -31,6 +32,8 @@ export class HomeComponent implements OnInit {
           this.items = response.map(item => new Item(item));
           this.sortedItems = this.items.filter(item => item.category._id === this.selectedCategory._id);
           this.sortedItems.sort((a, b) => a.price - b.price);
+
+          this.loadingItems = false;
         }
       });
   }

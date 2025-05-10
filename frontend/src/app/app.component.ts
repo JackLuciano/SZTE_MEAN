@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { Title } from '@angular/platform-browser';
 import { SITE_NAME } from './app.config';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { SITE_NAME } from './app.config';
 export class AppComponent implements OnInit {
   serverStatus: boolean = false;
 
-  constructor(private serverStatusService: ServerStatusService, private titleService: Title) { }
+  constructor(private serverStatusService: ServerStatusService, private titleService: Title, private authService: AuthService) { }
 
   ngOnInit() : void {
     this.serverStatusService.getServerStatus().subscribe((status) => {
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     });
 
     this.titleService.setTitle(SITE_NAME);
+    this.authService.setUser();
 
     // REMOVE THIS AFTER TESTING
     // localStorage.removeItem('userRole');
