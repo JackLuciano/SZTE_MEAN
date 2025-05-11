@@ -1,5 +1,4 @@
 import express from 'express';
-
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 import { SECRET } from '../config';
@@ -10,30 +9,34 @@ import { LogType } from '../data/logTypes';
 
 const router = express.Router();
 
+const sendErrorResponse = (res: express.Response, status: number, message: string) => {
+    res.status(status).json({ message });
+};
+
 router.post('/login', async (req: express.Request, res: express.Response) => {
     const { username, password } = req.body;
 
-    const user: User | null = await User.findByUsername(username) || await User.findByEmail(username);
-
+    const user = await User.findByUsername(username) || await User.findByEmail(username);
     if (!user || !await user.validatePassword(password)) {
-        res.status(401).json({ message: 'Invalid username or password.' });
-
-        return;
+        return sendErrorResponse(res, 401, 'Invalid username or password.');
     }
 
     const token = jwt.sign({ userId: user._id }, SECRET, { expiresIn: '1h' });
-    res.status(200).json({ token, user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        firstName: user.firstName,
-        secondName: user.secondName,
-        profilePicture: user.profilePicture,
-        createdAt: user.createdAt,
-        balance: user.balance,
-        onlineStatus: true,
-        role: user.role,
-    } });
+    res.status(200).json({
+        token,
+        user: {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            firstName: user.firstName,
+            secondName: user.secondName,
+            profilePicture: user.profilePicture,
+            createdAt: user.createdAt,
+            balance: user.balance,
+            onlineStatus: true,
+            role: user.role,
+        },
+    });
 
     addLog(LogType.LOGIN, user._id, [
         { username: user.username },
@@ -44,65 +47,49 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
 
 router.post('/register', async (req: express.Request, res: express.Response) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-    if (token) {
-        res.status(401).json({ message: 'Already logged in.' });
-
-        return;
+    if (authHeader?.split(' ')[1]) {
+        return sendErrorResponse(res, 401, 'Already logged in.');
     }
 
-
     const picture = req.files?.profilePicture as UploadedFile;
+    const { username, password, email, firstName, secondName } = req.body;
 
-    const { username, password, email, firstName, secondName } : { username: string; password: string; email: string; firstName: string; secondName: string; } = req.body;
     const { status, message, user } = await User.create(username, password, email, firstName, secondName, picture);
     if (!status) {
-        res.status(400).json({ message });
-
-        return;
+        return sendErrorResponse(res, 400, message);
     }
 
     res.status(201).json({ message });
 
     addLog(LogType.REGISTRATION, user!._id, [
-        { username: username },
+        { username },
         { ip: req.ip },
         { userAgent: req.headers['user-agent'] },
     ]);
 });
 
 router.post('/logout', middleware, (req: express.Request, res: express.Response) => {
-    // TODO CHANGE ONLINE STATUS TO FALSE LATER ON
-
     res.json({ message: 'Successfully logged out.' });
 });
 
-router.get('/verify', middleware, async (req: express.Request, res: express.Response) => {
+router.get('/verify', middleware, (req: express.Request, res: express.Response) => {
     res.json({ message: 'Token is valid.' });
 });
 
 router.post('/forgot-password', async (req: express.Request, res: express.Response) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-
-    if (token) {
-        res.status(401).json({ message: 'Already logged in.' });
-
-        return;
+    if (authHeader?.split(' ')[1]) {
+        return sendErrorResponse(res, 401, 'Already logged in.');
     }
 
-    const { email } : { email: string | undefined } = req.body;
+    const { email } = req.body;
     if (!email) {
-        res.status(400).json({ message: 'Email is required.' });
-
-        return;
+        return sendErrorResponse(res, 400, 'Email is required.');
     }
 
-    const user: User | null = await User.findByEmail(email);
+    const user = await User.findByEmail(email);
     if (!user) {
-        res.status(404).json({ message: 'User not found.' });
-
-        return;
+        return sendErrorResponse(res, 404, 'User not found.');
     }
 
     await User.forgotPassword(email);
@@ -117,12 +104,10 @@ router.post('/forgot-password', async (req: express.Request, res: express.Respon
 
 router.post('/delete-account', middleware, async (req: express.Request, res: express.Response) => {
     const user = (req as any).user;
-    const userId = user.userId;
+    const userId = user?.userId;
 
     if (!userId) {
-        res.status(401).json({ message: 'Unauthorized' });
-
-        return;
+        return sendErrorResponse(res, 401, 'Unauthorized');
     }
 
     await user.delete();

@@ -1,6 +1,5 @@
 import { Db, DeleteResult, ObjectId } from 'mongodb';
 import { MessageType } from '../data/messageTypes';
-
 import { getDatabase } from '../db';
 
 export class Message {
@@ -12,7 +11,15 @@ export class Message {
     createdAt: Date;
     readAt: Date | null;
 
-    constructor(message: {
+    constructor({
+        _id,
+        senderId,
+        receiverId,
+        message,
+        messageType,
+        createdAt,
+        readAt,
+    }: {
         _id: ObjectId;
         senderId: ObjectId;
         receiverId: ObjectId;
@@ -21,42 +28,45 @@ export class Message {
         createdAt: Date;
         readAt: Date | null;
     }) {
-        this._id = message._id;
-        this.senderId = message.senderId;
-        this.receiverId = message.receiverId;
-        this.message = message.message;
-        this.messageType = message.messageType;
-        this.createdAt = message.createdAt;
-        this.readAt = message.readAt;
+        this._id = _id;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.message = message;
+        this.messageType = messageType;
+        this.createdAt = createdAt;
+        this.readAt = readAt;
     }
 
     async save(): Promise<void> {
-        const db : (Db | null) = getDatabase();
-        await db?.collection('messages').updateOne({ _id: this._id }, { $set: this });
-    } 
-
-    async delete(): Promise<boolean> {
-        const db : (Db | null) = getDatabase();
-        const result : (DeleteResult | undefined) = await db?.collection('messages').deleteOne({ _id: this._id });
-        return result?.deletedCount === 1;
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+        await db.collection('messages').updateOne({ _id: this._id }, { $set: this });
     }
 
-    private static mapToMessage(message: any): Message {
+    async delete(): Promise<boolean> {
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+        const result = await db.collection('messages').deleteOne({ _id: this._id });
+        return result.deletedCount === 1;
+    }
+
+    private static mapToMessage(data: any): Message {
         return new Message({
-            _id: message._id,
-            senderId: message.senderId,
-            receiverId: message.receiverId,
-            message: message.message,
-            messageType: message.messageType,
-            createdAt: message.createdAt,
-            readAt: message.readAt,
+            _id: data._id,
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+            message: data.message,
+            messageType: data.messageType,
+            createdAt: data.createdAt,
+            readAt: data.readAt,
         });
     }
 
     private static async getMessagesByField(field: 'senderId' | 'receiverId', id: ObjectId): Promise<Message[]> {
-        const db : (Db | null) = getDatabase();
-        const messages = await db?.collection('messages').find({ [field]: id }).toArray();
-        return messages?.map(this.mapToMessage) || [];
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+        const messages = await db.collection('messages').find({ [field]: id }).toArray();
+        return messages.map(this.mapToMessage);
     }
 
     static async getBySenderId(senderId: ObjectId): Promise<Message[]> {
@@ -68,21 +78,22 @@ export class Message {
     }
 
     static async findById(messageId: ObjectId): Promise<Message | null> {
-        const db : (Db | null) = getDatabase();
-        const message = await db?.collection('messages').findOne({ _id: messageId });
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+        const message = await db.collection('messages').findOne({ _id: messageId });
         return message ? this.mapToMessage(message) : null;
     }
 
     static async getCurrentMessages(userId: ObjectId, targetId: ObjectId): Promise<Message[]> {
-        const db : (Db | null) = getDatabase();
-        const messages = await db?.collection('messages').find({
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+        const messages = await db.collection('messages').find({
             $or: [
                 { senderId: userId, receiverId: targetId },
                 { senderId: targetId, receiverId: userId },
             ],
         }).toArray();
-
-        return messages?.map(this.mapToMessage) || [];
+        return messages.map(this.mapToMessage);
     }
 
     static async getAllMessages(userId: ObjectId): Promise<Message[]> {
@@ -90,12 +101,17 @@ export class Message {
             this.getBySenderId(userId),
             this.getByReceiverId(userId),
         ]);
-
         return [...sentMessages, ...receivedMessages];
     }
 
-    static async createMessage(userId: ObjectId, targetId: ObjectId, message: string, messageType: MessageType) : Promise<Message> {
-        const db : (Db | null) = getDatabase();
+    static async createMessage(
+        userId: ObjectId,
+        targetId: ObjectId,
+        message: string,
+        messageType: MessageType
+    ): Promise<Message> {
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
         const newMessage = new Message({
             _id: new ObjectId(),
             senderId: userId,
@@ -105,8 +121,7 @@ export class Message {
             createdAt: new Date(),
             readAt: null,
         });
-
-        await db?.collection('messages').insertOne(newMessage);
+        await db.collection('messages').insertOne(newMessage);
         return newMessage;
     }
 }

@@ -5,10 +5,9 @@ import { ObjectId } from 'mongodb';
 const router = express.Router();
 
 router.get('/', async (req: express.Request, res: express.Response) => {
-    const userId : ObjectId = (req as any).user.userId;
-
-    const logs : Log[] = await Log.getAll(userId);
+    const userId: ObjectId = (req as any).user.userId;
+    const logs = await Log.getAll(userId);
     res.json(logs);
-})
+});
 
 export default router;
