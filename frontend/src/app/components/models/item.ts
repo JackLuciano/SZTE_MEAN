@@ -2,34 +2,34 @@ import { categories } from "../../data/categories";
 import { Category } from "./categories";
 
 export class Item {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    images: string[];
-    createdAt: Date;
-    category!: Category;
-    lastUpdated: Date;
-    ownerId: string;
-    location: string;
-    tags: string[];
-    isSold: boolean;
-    isDeleted: boolean;
+    _id : string;
+    name : string;
+    description : string;
+    price : number;
+    images : string[];
+    createdAt : Date;
+    category! : Category;
+    lastUpdated : Date;
+    ownerId : string;
+    location : string;
+    tags : string[];
+    isSold : boolean;
+    isDeleted : boolean;
 
-    constructor(item: {
-        _id: string;
-        name: string;
-        description: string;
-        price: number;
-        images: string[];
-        createdAt: Date;
-        category: Category | string;
-        lastUpdated: Date;
-        ownerId: string;
-        location: string;
-        tags: string[];
-        isSold: boolean;
-        isDeleted: boolean;
+    constructor(item : {
+        _id : string;
+        name : string;
+        description : string;
+        price : number;
+        images : string[];
+        createdAt : Date;
+        category : Category | string;
+        lastUpdated : Date;
+        ownerId : string;
+        location : string;
+        tags : string[];
+        isSold : boolean;
+        isDeleted : boolean;
     }) {
         this._id = item._id;
         this.name = item.name;

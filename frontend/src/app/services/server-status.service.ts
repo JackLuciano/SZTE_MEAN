@@ -8,16 +8,21 @@ import { API_URL } from '../app.config';
 })
 export class ServerStatusService {
 
-  constructor(private http: HttpClient) { }
+  private readonly healthCheckInterval = 5000;
+  private readonly healthEndpoint = `${API_URL}health`;
 
-  getServerStatus() : Observable<boolean> {
-    return timer(0, 5000).pipe(
-      switchMap(() =>
-        this.http.get(API_URL + 'health').pipe(
-          map(() => true),
-          catchError(() => of(false))
-        )
-      )
+  constructor(private http: HttpClient) {}
+
+  getServerStatus(): Observable<boolean> {
+    return timer(0, this.healthCheckInterval).pipe(
+      switchMap(() => this.checkServerHealth())
+    );
+  }
+
+  private checkServerHealth(): Observable<boolean> {
+    return this.http.get(this.healthEndpoint).pipe(
+      map(() => true),
+      catchError(() => of(false))
     );
   }
 }

@@ -9,11 +9,12 @@ import { Router } from '@angular/router';
   styleUrl: './item.component.scss'
 })
 export class ItemComponent {
-  @Input() item: Item | undefined;
+  @Input() item : Item | undefined;
+  @Input() myItem : boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router : Router) { }
 
-  openItem(itemId: string) {
+  openItem(itemId: string) : void {
     this.router.navigate(['/item', itemId]);
   }
 }

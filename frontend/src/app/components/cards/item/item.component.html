@@ -4,6 +4,9 @@
         <h3>{{ item!.name }}</h3>
         <p>Price: <span class="price">${{ item!.price }}</span></p>
         <p>Location: {{ item!.location }}</p>
+        @if (myItem) {
+            <p style="color: rgb(37, 179, 18);"><br><b>Your item</b></p>
+        }
     </div>
 
     <div class="action">

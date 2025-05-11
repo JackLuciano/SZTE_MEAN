@@ -15,14 +15,23 @@ import { InfoboxUtil } from '../../../utilts/infobox-util';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  message : string = '';
+  message: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router, private httpClient: HttpClient, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -31,39 +40,53 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.message = 'Please fill in all required fields.';
+    if (this.isFormInvalid()) {
+      this.displayMessage('Please fill in all required fields.');
       return;
     }
 
-    const { username, password } : { username: string; password: string; } = this.loginForm.value;
-    
-    this.httpClient.post(API_URL + 'auth/login', { username, password }, { headers: { 'skip-auth': 'true' } })
+    const { username, password } = this.loginForm.value;
+    this.login(username, password);
+  }
+
+  private isFormInvalid(): boolean {
+    return this.loginForm.invalid;
+  }
+
+  private displayMessage(message: string): void {
+    this.message = message;
+  }
+
+  private login(username: string, password: string): void {
+    this.httpClient.post(`${API_URL}auth/login`, { username, password }, { headers: { 'skip-auth': 'true' } })
       .subscribe({
-      next: (response: any) => {
-          const { token, user } = response as { token: string; user: User };
-          
-          this.authService.setToken(token);
-          const userData : string = JSON.stringify(user);
-          localStorage.setItem('user', userData);
-          this.authService.setUser(userData);
-
-          this.router.navigate(['/']);
-
-          InfoboxUtil.showInfoBox({
-            message: 'Successfully logged in!',
-            type: 'success',
-            duration: 3000
-          })
-        },
-        error: (error) => {
-          const message = error.error?.message || 'An error occurred';
-          InfoboxUtil.showInfoBox({
-            message: message,
-            type: 'error',
-            duration: 3000
-          })
-        }
+        next: (response: any) => this.handleLoginSuccess(response),
+        error: (error) => this.handleLoginError(error)
       });
+  }
+
+  private handleLoginSuccess(response: any): void {
+    const { token, user } = response as { token: string; user: User };
+
+    this.authService.setToken(token);
+    const userData = JSON.stringify(user);
+    localStorage.setItem('user', userData);
+    this.authService.setUser(userData);
+
+    this.router.navigate(['/']);
+    InfoboxUtil.showMessage({
+      message: 'Successfully logged in!',
+      type: 'success',
+      duration: 3000
+    });
+  }
+
+  private handleLoginError(error: any): void {
+    const message = error.error?.message || 'An error occurred';
+    InfoboxUtil.showMessage({
+      message,
+      type: 'error',
+      duration: 3000
+    });
   }
 }

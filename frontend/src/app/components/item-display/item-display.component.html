@@ -49,6 +49,16 @@
                 Created at: {{ item!.createdAt | hungarianDate }}<br>
                 Last modified at: {{ item!.lastUpdated | hungarianDate }}
             </div>
+
+            @if (showConfirmation) {
+                <app-confirm-dialog
+                    [message]="showConfirmation[0].message"
+                    [confirmButtonText]="showConfirmation[0].confirmButtonText"
+                    [cancelButtonText]="showConfirmation[0].cancelButtonText"
+                    (confirm)="showConfirmation[0].confirm()"
+                    (cancel)="showConfirmation[0].cancel()">
+                </app-confirm-dialog>
+            }
         }
     </div>
 </div>

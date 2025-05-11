@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-infobox',
@@ -23,22 +24,22 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class InfoboxComponent implements OnInit, OnDestroy {
-  @Input() message!: string;
-  @Input() type: 'success' | 'error' | 'info' | 'warning' = 'info';
-  @Input() icon?: string;
-  @Input() duration: number = 5000;
-  @Output() closed = new EventEmitter<void>();
+  @Input() message! : string;
+  @Input() type : 'success' | 'error' | 'info' | 'warning' = 'info';
+  @Input() icon? : string;
+  @Input() duration : number = 5000;
+  @Output() closed : EventEmitter<void> = new EventEmitter<void>();
 
-  progressWidth: number = 0;
-  private timer: any;
-  private progressInterval: any;
+  progressWidth : number = 0;
+  private timer : any;
+  private progressInterval : any;
 
-  private startTimer(): void {
-    const startTime = Date.now();
-    const endTime = startTime + this.duration;
+  private startTimer() : void {
+    const startTime : number = Date.now();
+    const endTime : number = startTime + this.duration;
 
     this.progressInterval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
+      const elapsed : number = Date.now() - startTime;
       this.progressWidth = Math.min(100, (elapsed / this.duration) * 100);
       
       if (elapsed >= this.duration) {
@@ -53,12 +54,12 @@ export class InfoboxComponent implements OnInit, OnDestroy {
     }, this.duration);
   }
 
-  private cleanUp(): void {
+  private cleanUp() : void {
     clearInterval(this.progressInterval);
     clearTimeout(this.timer);
   }
 
-  ngOnInit(): void {
+  ngOnInit() : void {
     if (!this.message) {
       this.closed.emit();
 
@@ -67,11 +68,11 @@ export class InfoboxComponent implements OnInit, OnDestroy {
     this.startTimer();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() : void {
     this.cleanUp();
   }
 
-  close(): void {
+  close() : void {
     this.cleanUp();
     this.closed.emit();
   }

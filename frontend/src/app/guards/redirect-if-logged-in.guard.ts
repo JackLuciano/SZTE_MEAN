@@ -1,12 +1,12 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 
-export const redirectIfLoggedInGuard: CanActivateFn = (route, state) => {
-  const hasToken = !!localStorage.getItem('token');
-
+export const redirectIfLoggedInGuard: CanActivateFn = () => {
   const router = inject(Router);
+  const isLoggedIn = Boolean(localStorage.getItem('token'));
 
-  if (hasToken) {
+  if (isLoggedIn) {
     router.navigate(['/']);
     return false;
   }

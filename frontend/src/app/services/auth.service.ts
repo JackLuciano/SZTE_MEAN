@@ -3,48 +3,51 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../components/models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private authenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
-  private user : User | null = null;
-  private userSubject = new BehaviorSubject<User | null>(this.user);
+  private authenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
+  private userSubject = new BehaviorSubject<User | null>(null);
 
-  constructor() {
-  }
+  constructor() {}
 
-  get authenticated$() : Observable<boolean> {
+  get authenticated$(): Observable<boolean> {
     return this.authenticatedSubject.asObservable();
   }
 
-  get user$() : Observable<User | null> {
+  get user$(): Observable<User | null> {
     return this.userSubject.asObservable();
   }
 
-  isAuthenticated(): boolean {
+  private checkToken(): boolean {
     const token = localStorage.getItem('token');
-    return !!token && token !== '';
+    return !!token && token.trim() !== '';
   }
 
-  logout() : void {
+  logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-
     this.authenticatedSubject.next(false);
+    this.clearUser();
   }
 
-  setToken(token: string) : void {
+  setToken(token: string): void {
     localStorage.setItem('token', token);
     this.authenticatedSubject.next(true);
   }
 
-  setUser(userData: string | null = null) : void {
-    const user = userData ? JSON.parse(userData) : null;
-    this.user = user ? User.fromJson(user) : null;
-    this.userSubject.next(this.user);
+  setUser(userData: string | null = null): void {
+    const parsedUser = userData ? JSON.parse(userData) : null;
+    const user = parsedUser ? User.fromJson(parsedUser) : null;
 
-    if (!this.user) {
+    this.userSubject.next(user);
+
+    if (!user) {
       this.logout();
     }
+  }
+
+  private clearUser(): void {
+    this.userSubject.next(null);
   }
 }

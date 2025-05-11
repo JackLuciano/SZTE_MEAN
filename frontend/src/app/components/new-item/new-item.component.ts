@@ -10,10 +10,10 @@ import { API_URL } from '../../app.config';
 })
 export class NewItemComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient : HttpClient) { }
 
-  ngOnInit(): void {
-    this.httpClient.post(API_URL + 'items', { name: 'New Item' })
-      .subscribe({});
+  ngOnInit() : void {
+    // this.httpClient.post(API_URL + 'items', { name: 'New Item' })
+    //   .subscribe({});
   }
 }

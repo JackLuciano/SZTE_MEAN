@@ -10,36 +10,50 @@ export const AuthInterceptor: HttpInterceptorFn = (request, next) => {
   const authService = inject(AuthService);
   const token = localStorage.getItem('token');
 
-  const skipAuth = request.headers.get('skip-auth');
-  if (skipAuth) {
+  if (shouldSkipAuth(request)) {
     return next(request);
   }
 
+  const authorizedRequest = addAuthorizationHeader(request, token);
+
+  return next(authorizedRequest).pipe(
+    tap(handleResponse),
+    catchError((error) => handleError(error, authService, router))
+  );
+};
+
+function shouldSkipAuth(request: any): boolean {
+  return !!request.headers.get('skip-auth');
+}
+
+function addAuthorizationHeader(request: any, token: string | null): any {
   if (token) {
-    request = request.clone({
+    return request.clone({
       headers: request.headers.set('Authorization', `Bearer ${token}`)
     });
   }
+  return request;
+}
 
-  return next(request).pipe(
-    tap((event) => {
-      
-    }),
-    catchError((error) => {
-      if (error.status === 401 || error.status === 403) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        authService.setUser();
-        router.navigate(['/']);
+function handleResponse(event: any): void {
+  
+}
 
-        InfoboxUtil.showInfoBox({
-          message: "Session expired. Please log in again.",
-          type: 'error',
-          duration: 3000
-        })
-      }
+function handleError(error: any, authService: AuthService, router: Router) {
+  if (error.status === 401 || error.status === 403) {
+    clearSession(authService);
+    router.navigate(['/']);
+    InfoboxUtil.showMessage({
+      message: "Session expired. Please log in again.",
+      type: 'error',
+      duration: 3000
+    });
+  }
+  return throwError(() => error);
+}
 
-      return throwError(() => error);
-    })
-  );
+function clearSession(authService: AuthService): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  authService.setUser();
 }

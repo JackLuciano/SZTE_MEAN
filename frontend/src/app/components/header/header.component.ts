@@ -14,15 +14,17 @@ import { InfoboxUtil } from '../../utilts/infobox-util';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-  menuOpen: boolean = false;
-  isAuthenticated: boolean = false;
-  user: User | null = null;
+  menuOpen : boolean = false;
+  isAuthenticated : boolean = false;
+  user : User | null = null;
 
-  routes: any[] = [];
+  routes : any[] = [];
+  
+  shopName : string = SITE_NAME;
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService : AuthService, private router : Router){}
 
-  ngOnInit() : void {
+  private subscribeToAuth() : void {
     this.authService.authenticated$.subscribe((authenticated: boolean) => {
       this.isAuthenticated = authenticated;
 
@@ -40,7 +42,9 @@ export class HeaderComponent implements OnInit {
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
+  }
 
+  private setupRoutes() : void {
     this.routes = [
       { name: '🏠 Home', routerLink: '/', show: () => true },
       { name: '🔐 Login', routerLink: '/login', show: () => !this.isAuthenticated },
@@ -48,7 +52,7 @@ export class HeaderComponent implements OnInit {
       { name: '➕ New item', routerLink: '/new-item', show: () => this.isAuthenticated },
       { name: '📦 My items', routerLink: '/my-items', show: () => this.isAuthenticated },
       { name: '👤 My profile', /*routerLink: '/my-profile'*/ click: () => {
-        InfoboxUtil.showInfoBox({
+        InfoboxUtil.showMessage({
           message: "WORK IN PROGRESS",
           type: 'error',
           duration: 3000
@@ -64,7 +68,10 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  shopName: string = SITE_NAME;
+  ngOnInit() : void {
+    this.subscribeToAuth();
+    this.setupRoutes();
+  }
 
   logout() : void {
     this.authService.logout();

@@ -10,16 +10,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './infobox-container.component.scss'
 })
 export class InfoboxContainerComponent implements OnInit {
-  constructor(public infoboxService: InfoboxService) {}
-  infoboxes: any[] = [];
+  constructor(public infoboxService : InfoboxService) {}
+  infoboxes : any[] = [];
 
-  ngOnInit(): void {
+  ngOnInit() : void {
     this.infoboxService.message$.subscribe((messages) => {
       this.infoboxes = messages;
     });
   }
 
-  removeMessage(index: number): void {
+  removeMessage(index : number) : void {
     this.infoboxService.remove(index);
   }
 }

@@ -1,13 +1,16 @@
 import { InfoboxService, InfoboxMessage } from '../services/infobox.service';
 
 export class InfoboxUtil {
-    private static infoboxService: InfoboxService;
+    private static infoboxService: InfoboxService | null = null;
 
-    static init(infoboxService: InfoboxService) {
-        this.infoboxService = infoboxService;
+    static initialize(service: InfoboxService): void {
+        this.infoboxService = service;
     }
 
-    static showInfoBox(box: InfoboxMessage) {
-        this.infoboxService?.show(box);
+    static showMessage(message: InfoboxMessage): void {
+        if (!this.infoboxService) {
+            return;
+        }
+        this.infoboxService.show(message);
     }
 }

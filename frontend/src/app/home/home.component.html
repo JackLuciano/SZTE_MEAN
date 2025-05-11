@@ -2,7 +2,7 @@
     <div class="categories-container">
         <ng-container *ngFor="let category of categories">
             <a 
-                [id]="category._id" 
+                [id]="category._id"
                 [class.active]="selectedCategory._id === category._id" 
                 (click)="selectCategory(category._id)">
                 {{ category.name }}
@@ -23,7 +23,8 @@
             } @else {
                 <ng-container *ngFor="let item of sortedItems">
                     <app-item class="item" 
-                        [item]="item" 
+                        [item]="item"
+                        [myItem]="user?.userId === item.ownerId"
                         >
                     </app-item>
                 </ng-container>

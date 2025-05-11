@@ -8,27 +8,23 @@ export interface InfoboxMessage {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InfoboxService {
   private infoboxSubject = new BehaviorSubject<InfoboxMessage[]>([]);
-  message$ = this.infoboxSubject.asObservable();
+  readonly message$ = this.infoboxSubject.asObservable();
 
-  show(message: InfoboxMessage) : void {
-    const currentMessages = this.infoboxSubject.value;
-    const newMessage = {
-      ...message
-    };
-    this.infoboxSubject.next([...currentMessages, newMessage]);
+  show(message: InfoboxMessage): void {
+    const updatedMessages = [...this.infoboxSubject.value, message];
+    this.infoboxSubject.next(updatedMessages);
   }
 
-  remove(index: number) : void {
-    const messages = this.infoboxSubject.value;
-    messages.splice(index, 1);
-    this.infoboxSubject.next([...messages]);
+  remove(index: number): void {
+    const updatedMessages = this.infoboxSubject.value.filter((_, i) => i !== index);
+    this.infoboxSubject.next(updatedMessages);
   }
 
-  removeAll() : void {
+  removeAll(): void {
     this.infoboxSubject.next([]);
   }
 }

@@ -16,9 +16,17 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm!: FormGroup;
   message: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router, private httpClient: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -26,35 +34,47 @@ export class ForgotPasswordComponent implements OnInit {
 
   backToLogin(): void {
     this.router.navigate(['/login']);
-  };
+  }
 
   onSubmit(): void {
-    if (this.forgotPasswordForm.invalid) {
+    if (this.isFormInvalid()) {
       this.message = 'Please fill in all required fields.';
       return;
     }
 
-    const { email } : { email: string; } = this.forgotPasswordForm.value;
+    this.sendForgotPasswordRequest();
+  }
 
-    this.httpClient.post(API_URL + 'auth/forgot-password', { email }, { headers: { 'skip-auth': 'true' } })
+  private isFormInvalid(): boolean {
+    return this.forgotPasswordForm.invalid;
+  }
+
+  private sendForgotPasswordRequest(): void {
+    const { email } = this.forgotPasswordForm.value;
+
+    this.httpClient
+      .post(`${API_URL}auth/forgot-password`, { email }, { headers: { 'skip-auth': 'true' } })
       .subscribe({
-        next: (response: any) => {
-          const { message } = response as { message: string };
-
-          InfoboxUtil.showInfoBox({
-            message: message,
-            type: 'success',
-            duration: 3000
-          })
-        },
-        error: (error) => {
-          const message = error.error?.message || 'An error occurred';
-          InfoboxUtil.showInfoBox({
-            message: message,
-            type: 'error',
-            duration: 3000
-          })
-        }
+        next: (response: any) => this.handleSuccess(response),
+        error: (error) => this.handleError(error),
       });
+  }
+
+  private handleSuccess(response: any): void {
+    const { message } = response as { message: string };
+    InfoboxUtil.showMessage({
+      message,
+      type: 'success',
+      duration: 3000,
+    });
+  }
+
+  private handleError(error: any): void {
+    const message = error.error?.message || 'An error occurred';
+    InfoboxUtil.showMessage({
+      message,
+      type: 'error',
+      duration: 3000,
+    });
   }
 }
