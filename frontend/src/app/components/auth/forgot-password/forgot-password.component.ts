@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { API_URL } from '../../../app.config';
+import { InfoboxUtil } from '../../../utilts/infobox-util';
 
 @Component({
   selector: 'app-forgot-password',
@@ -35,19 +36,24 @@ export class ForgotPasswordComponent implements OnInit {
 
     const { email } : { email: string; } = this.forgotPasswordForm.value;
 
-    this.httpClient.post(API_URL + 'auth/forgot-password', { email })
+    this.httpClient.post(API_URL + 'auth/forgot-password', { email }, { headers: { 'skip-auth': 'true' } })
       .subscribe({
         next: (response: any) => {
           const { message } = response as { message: string };
 
-          this.message = message;
+          InfoboxUtil.showInfoBox({
+            message: message,
+            type: 'success',
+            duration: 3000
+          })
         },
         error: (error) => {
-          if (error.status === 404) {
-            this.message = error.error?.message || 'Email not found';
-          } else {
-            this.message = 'Unexpected error occurred.';
-          }
+          const message = error.error?.message || 'An error occurred';
+          InfoboxUtil.showInfoBox({
+            message: message,
+            type: 'error',
+            duration: 3000
+          })
         }
       });
   }

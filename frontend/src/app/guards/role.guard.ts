@@ -6,11 +6,11 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const userRole = authService.getUserRole();
-  if (!userRole || userRole !== 'admin') {
-    router.navigate(['/']);
-    return false;
-  }
+  // const userRole = authService.getUserRole();
+  // if (!userRole || userRole !== 'admin') {
+  //   router.navigate(['/']);
+  //   return false;
+  // }
 
   return true;
 };

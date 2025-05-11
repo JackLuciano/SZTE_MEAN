@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { API_URL } from '../../../app.config';
+import { InfoboxUtil } from '../../../utilts/infobox-util';
 
 @Component({
   selector: 'app-registration',
@@ -62,19 +63,25 @@ export class RegistrationComponent implements OnInit {
       formData.append('profilePicture', picture, picture.name);
     }
     
-    this.httpClient.post(API_URL + 'auth/register', formData)
+    this.httpClient.post(API_URL + 'auth/register', formData, { headers: { 'skip-auth': 'true' } })
       .subscribe({
         next: (response: any) => {
           const { message } = response as { message: string };
 
-          this.message = message;
+          InfoboxUtil.showInfoBox({
+            message: message,
+            type: 'success',
+            duration: 3000
+          })
 
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
-          this.message = error.error?.message || 'Unauthorized';
+          InfoboxUtil.showInfoBox({
+            message: error.error?.message || 'Unauthorized',
+            type: 'error',
+            duration: 3000
+          })
         },
       });
   }

@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SITE_NAME } from '../../app.config';
 import { User } from '../models/user';
+import { InfoboxUtil } from '../../utilts/infobox-util';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,6 @@ import { User } from '../models/user';
 export class HeaderComponent implements OnInit {
   menuOpen: boolean = false;
   isAuthenticated: boolean = false;
-  userRole: string | null = null;
   user: User | null = null;
 
   routes: any[] = [];
@@ -37,23 +37,23 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    this.authService.userRole$.subscribe((role) => {
-      this.userRole = role;
-    });
-
     this.authService.user$.subscribe((user) => {
       this.user = user;
-
-      console.log('User:', user);
     });
 
     this.routes = [
-      { name: '🏠 Home', routerLink: '/' },
+      { name: '🏠 Home', routerLink: '/', show: () => true },
       { name: '🔐 Login', routerLink: '/login', show: () => !this.isAuthenticated },
       { name: '📝 Register', routerLink: '/register', show: () => !this.isAuthenticated },
       { name: '➕ New item', routerLink: '/new-item', show: () => this.isAuthenticated },
       { name: '📦 My items', routerLink: '/my-items', show: () => this.isAuthenticated },
-      { name: '👤 My profile', routerLink: '/my-profile', show: () => this.isAuthenticated },
+      { name: '👤 My profile', /*routerLink: '/my-profile'*/ click: () => {
+        InfoboxUtil.showInfoBox({
+          message: "WORK IN PROGRESS",
+          type: 'error',
+          duration: 3000
+        })
+      }, show: () => this.isAuthenticated },
       { name: '🚪 Logout', click: () => this.logout(), show: () => this.isAuthenticated }
     ];
 

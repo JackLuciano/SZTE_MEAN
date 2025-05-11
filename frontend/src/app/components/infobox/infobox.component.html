@@ -1,0 +1,25 @@
+<div 
+  @fadeSlideInOut
+  class="infobox"
+  [class]="'infobox-' + type"
+  (click)="close()">
+  
+  <div class="infobox-icon">
+    <ng-container [ngSwitch]="type">
+      <span *ngSwitchCase="'success'">✓</span>
+      <span *ngSwitchCase="'error'">✕</span>
+      <span *ngSwitchCase="'warning'">⚠</span>
+      <span *ngSwitchDefault>i</span>
+    </ng-container>
+  </div>
+  
+  <div class="infobox-content">
+    {{ message }}
+  </div>
+  
+  <button class="infobox-close" (click)="close()">
+    &times;
+  </button>
+  
+  <div class="infobox-progress" [style.width.%]="progressWidth"></div>
+</div>

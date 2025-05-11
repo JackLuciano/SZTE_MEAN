@@ -33,7 +33,7 @@ export class User {
 
     static fromJson(json: any): User {
         return new User(
-            json.userId,
+            json._id,
             json.username,
             json.email,
             json.firstName,
