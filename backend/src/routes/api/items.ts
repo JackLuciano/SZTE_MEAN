@@ -1,5 +1,6 @@
 import express from 'express';
 import { Item } from '../../models/item';
+import { middleware } from '../protected';
 
 const router = express.Router();
 
@@ -18,6 +19,10 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
     }
 
     res.json(item);
+});
+
+router.post('/', middleware, async (req: express.Request, res: express.Response) => {
+    res.json({ message: 'Item created' });
 });
 
 export default router;

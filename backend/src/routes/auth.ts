@@ -77,6 +77,10 @@ router.post('/logout', middleware, (req: express.Request, res: express.Response)
     res.json({ message: 'Successfully logged out.' });
 });
 
+router.get('/verify', middleware, async (req: express.Request, res: express.Response) => {
+    res.json({ message: 'Token is valid.' });
+});
+
 router.post('/forgot-password', async (req: express.Request, res: express.Response) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader?.split(' ')[1];
