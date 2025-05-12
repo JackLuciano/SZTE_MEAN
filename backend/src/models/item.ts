@@ -1,6 +1,8 @@
 import { Db, ObjectId } from 'mongodb';
 import { getDatabase } from '../db';
 import { UploadedFile } from 'express-fileupload';
+import path from 'path';
+import fs from 'fs';
 
 export class Item {
     _id: ObjectId;
@@ -87,16 +89,19 @@ export class Item {
     ): Promise<{ status: boolean; message: string; item?: Item }> {
         const db = getDatabase();
         if (!db) throw new Error('Database connection not available');
-
+        
         const validationError = this.validateItemData(name, description, price, category, tags, location);
         if (validationError) return { status: false, message: validationError };
 
+        const itemId = new ObjectId();
+        const imageUrls = this.uploadImages(images, itemId) || [];
+
         const item = new Item({
-            _id: new ObjectId(),
+            _id: itemId,
             name,
             description,
             price,
-            images: [],
+            images: imageUrls,
             createdAt: new Date(),
             category,
             lastUpdated: new Date(),
@@ -110,6 +115,24 @@ export class Item {
 
         await db.collection('items').insertOne(item);
         return { status: true, message: 'Item created successfully.', item };
+    }
+
+    private static uploadImages(pictures: UploadedFile[], itemId: ObjectId): string[] {
+        const imageUrls: string[] = [];
+        pictures.forEach((picture) => {
+            const extension = path.extname(picture.name);
+            const fileName = `${itemId}_${imageUrls.length}${extension}`;
+            const uploadPath = path.join(__dirname, '../uploads/items', fileName);
+
+            if (!fs.existsSync(path.join(__dirname, '../uploads/items'))) {
+                fs.mkdirSync(path.join(__dirname, '../uploads/items'));
+            }
+
+            picture.mv(uploadPath);
+            imageUrls.push(fileName);
+        });
+
+        return imageUrls;
     }
 
     static async deleteById(id: string): Promise<void> {
