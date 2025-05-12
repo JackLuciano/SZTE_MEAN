@@ -34,7 +34,6 @@ export class RegistrationComponent implements OnInit {
       secondName: ['', Validators.required],
       password: ['', Validators.required],
       password2: ['', Validators.required],
-      picture: [''],
     });
   }
 
