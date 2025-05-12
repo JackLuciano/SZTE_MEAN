@@ -54,7 +54,7 @@ router.post('/create', middleware, async (req: express.Request, res: express.Res
             return handleError(res, 400, message);
         }
 
-        res.status(201).json({ message: 'Item created successfully!', item });
+        res.status(201).json({ message: 'Item created successfully!' });
 
         addLog(LogType.CREATE_ITEM, (req as any).user.userId, [
             { itemId: item?._id },

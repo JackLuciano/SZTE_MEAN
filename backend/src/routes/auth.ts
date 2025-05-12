@@ -72,8 +72,11 @@ router.post('/logout', middleware, (req: express.Request, res: express.Response)
     res.json({ message: 'Successfully logged out.' });
 });
 
-router.get('/verify', middleware, (req: express.Request, res: express.Response) => {
-    res.json({ message: 'Token is valid.' });
+router.get('/verify', middleware, async (req: express.Request, res: express.Response) => {
+    const userId = (req as any).user?.userId;
+    const user : User | null = await User.findById(userId);
+    
+    res.json({ message: 'Token is valid.', user: user });
 });
 
 router.post('/forgot-password', async (req: express.Request, res: express.Response) => {
