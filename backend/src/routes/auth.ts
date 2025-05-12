@@ -13,6 +13,19 @@ const sendErrorResponse = (res: express.Response, status: number, message: strin
     res.status(status).json({ message });
 };
 
+const convertUserToResponse = (user: User) => ({
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    firstName: user.firstName,
+    secondName: user.secondName,
+    profilePicture: user.profilePicture,
+    createdAt: user.createdAt,
+    balance: user.balance,
+    onlineStatus: true,
+    role: user.role,
+});
+
 router.post('/login', async (req: express.Request, res: express.Response) => {
     const { username, password } = req.body;
 
@@ -24,18 +37,7 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
     const token = jwt.sign({ userId: user._id }, SECRET, { expiresIn: '1h' });
     res.status(200).json({
         token,
-        user: {
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            firstName: user.firstName,
-            secondName: user.secondName,
-            profilePicture: user.profilePicture,
-            createdAt: user.createdAt,
-            balance: user.balance,
-            onlineStatus: true,
-            role: user.role,
-        },
+        user: convertUserToResponse(user),
     });
 
     addLog(LogType.LOGIN, user._id, [
@@ -75,8 +77,11 @@ router.post('/logout', middleware, (req: express.Request, res: express.Response)
 router.get('/verify', middleware, async (req: express.Request, res: express.Response) => {
     const userId = (req as any).user?.userId;
     const user : User | null = await User.findById(userId);
-    
-    res.json({ message: 'Token is valid.', user: user });
+    if (!user) {
+        return sendErrorResponse(res, 401, 'Unauthorized');
+    }
+
+    res.json({ message: 'Token is valid.', user: convertUserToResponse(user) });
 });
 
 router.post('/forgot-password', async (req: express.Request, res: express.Response) => {
