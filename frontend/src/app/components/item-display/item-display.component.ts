@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../models/user';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { finalize } from 'rxjs';
-import { InfoboxUtil } from '../../utilts/infobox-util';
+import { InfoboxUtil } from '../../utils/infobox-util';
 
 @Component({
   selector: 'app-item-display',

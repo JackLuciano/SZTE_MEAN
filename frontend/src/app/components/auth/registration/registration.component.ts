@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { API_URL } from '../../../app.config';
-import { InfoboxUtil } from '../../../utilts/infobox-util';
+import { InfoboxUtil } from '../../../utils/infobox-util';
 
 @Component({
   selector: 'app-registration',

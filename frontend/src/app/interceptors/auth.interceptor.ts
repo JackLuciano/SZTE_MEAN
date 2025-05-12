@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { catchError, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
-import { InfoboxUtil } from '../utilts/infobox-util';
+import { InfoboxUtil } from '../utils/infobox-util';
 
 export const AuthInterceptor: HttpInterceptorFn = (request, next) => {
   const router = inject(Router);

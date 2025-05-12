@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../app.config';
-import { InfoboxUtil } from '../../utilts/infobox-util';
+import { InfoboxUtil } from '../../utils/infobox-util';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Category } from '../models/categories';

@@ -11,7 +11,7 @@ import { InfoboxService } from './services/infobox.service';
 import { HeaderComponent } from './components/header/header.component';
 import { InfoboxContainerComponent } from './components/infobox-container/infobox-container.component';
 
-import { InfoboxUtil } from './utilts/infobox-util';
+import { InfoboxUtil } from './utils/infobox-util';
 import { SITE_NAME, API_URL } from './app.config';
 
 @Component({

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { API_URL } from '../../../app.config';
-import { InfoboxUtil } from '../../../utilts/infobox-util';
+import { InfoboxUtil } from '../../../utils/infobox-util';
 
 @Component({
   selector: 'app-forgot-password',

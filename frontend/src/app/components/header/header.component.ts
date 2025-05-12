@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SITE_NAME } from '../../app.config';
 import { User } from '../models/user';
-import { InfoboxUtil } from '../../utilts/infobox-util';
+import { InfoboxUtil } from '../../utils/infobox-util';
 
 @Component({
   selector: 'app-header',
