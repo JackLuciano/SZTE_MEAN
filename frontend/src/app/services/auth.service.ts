@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   setUser(userData: string | null = null): void {
-    const parsedUser = userData ? JSON.parse(userData) : null;
+    const parsedUser = userData ? (typeof userData === 'string' ? JSON.parse(userData) : userData) : null;
     const user = parsedUser ? User.fromJson(parsedUser) : null;
 
     this.userSubject.next(user);

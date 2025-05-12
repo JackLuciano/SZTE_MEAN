@@ -22,6 +22,7 @@ import { SITE_NAME, API_URL } from './app.config';
 })
 export class AppComponent implements OnInit {
   serverStatus: boolean = false;
+  updatingUser: boolean = false;
 
   constructor(
     private infoboxService: InfoboxService,
@@ -66,7 +67,13 @@ export class AppComponent implements OnInit {
   private verifyToken(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.httpClient.get(`${API_URL}auth/verify`).subscribe();
+      this.updatingUser = true;
+      this.httpClient.get(`${API_URL}auth/verify`).subscribe(
+        (response: any) => {
+          this.updatingUser = false;
+          this.authService.setUser(response.user);
+        },
+      );
     }
   }
 }
