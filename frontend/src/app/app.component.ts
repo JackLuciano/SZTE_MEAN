@@ -12,7 +12,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { InfoboxContainerComponent } from './components/infobox-container/infobox-container.component';
 
 import { InfoboxUtil } from './utils/infobox-util';
-import { SITE_NAME, API_URL } from './app.config';
+import { getSiteName, getAPIUrl } from './app.config';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,7 @@ import { SITE_NAME, API_URL } from './app.config';
 export class AppComponent implements OnInit {
   serverStatus: boolean = false;
   updatingUser: boolean = false;
+  updateTimer: any;
 
   constructor(
     private infoboxService: InfoboxService,
@@ -40,6 +41,8 @@ export class AppComponent implements OnInit {
     this.setPageTitle();
     this.initializeUser();
     this.verifyToken();
+
+    setInterval(() => this.verifyToken(), 5000);
   }
 
   private initializeInfobox(): void {
@@ -54,7 +57,7 @@ export class AppComponent implements OnInit {
   }
 
   private setPageTitle(): void {
-    this.titleService.setTitle(SITE_NAME);
+    this.titleService.setTitle(getSiteName());
   }
 
   private initializeUser(): void {
@@ -67,9 +70,12 @@ export class AppComponent implements OnInit {
   private verifyToken(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      this.updatingUser = true;
-      this.httpClient.get(`${API_URL}auth/verify`).subscribe(
+      this.updateTimer = setTimeout(() => {
+        this.updatingUser = true;
+      }, 1000);
+      this.httpClient.get(getAPIUrl(`auth/verify`)).subscribe(
         (response: any) => {
+          clearTimeout(this.updateTimer);
           this.updatingUser = false;
           this.authService.setUser(response.user);
         },

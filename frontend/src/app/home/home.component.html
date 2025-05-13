@@ -16,6 +16,9 @@
                 <p>Loading items...</p>
             </div>
         } @else {
+            <div class="items-refresh">
+                <button (click)="fetchItems()">Refresh items</button>
+            </div>
             @if (sortedItems.length === 0) {
                 <div class="no-items">
                     <p>No items found in this category.</p>

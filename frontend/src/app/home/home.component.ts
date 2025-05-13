@@ -6,7 +6,7 @@ import { categories } from '../data/categories';
 import { Category } from '../components/models/categories';
 import { ItemComponent } from '../components/cards/item/item.component';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from '../app.config';
+import { getAPIUrl } from '../app.config';
 import { User } from '../components/models/user';
 
 @Component({
@@ -37,8 +37,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private fetchItems(): void {
-    this.httpClient.get<Item[]>(`${API_URL}items`).subscribe({
+  fetchItems(): void {
+    this.loadingItems = true;
+    this.items = [];
+    this.sortedItems = [];
+
+    this.httpClient.get<Item[]>(getAPIUrl('items')).subscribe({
       next: (response: Item[]) => {
         this.items = response.map(item => new Item(item));
         this.sortItems();

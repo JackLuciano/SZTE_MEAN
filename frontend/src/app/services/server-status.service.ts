@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
-import { API_URL } from '../app.config';
+import { getAPIUrl } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { API_URL } from '../app.config';
 export class ServerStatusService {
 
   private readonly healthCheckInterval = 5000;
-  private readonly healthEndpoint = `${API_URL}health`;
+  private readonly healthEndpoint = getAPIUrl(`health`);
 
   constructor(private http: HttpClient) {}
 

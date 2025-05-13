@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { API_URL } from '../../../app.config';
+import { getAPIUrl } from '../../../app.config';
 import { InfoboxUtil } from '../../../utils/infobox-util';
 
 @Component({
@@ -77,7 +77,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   private registerUser(formData: FormData): void {
-    this.httpClient.post(`${API_URL}auth/register`, formData, { headers: { 'skip-auth': 'true' } })
+    this.httpClient.post(getAPIUrl(`auth/register`), formData, { headers: { 'skip-auth': 'true' } })
       .subscribe({
         next: (response: any) => this.handleSuccess(response),
         error: (error) => this.handleError(error),

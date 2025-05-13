@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from '../../app.config';
+import { getAPIUrl } from '../../app.config';
 import { InfoboxUtil } from '../../utils/infobox-util';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -73,7 +73,7 @@ export class NewItemComponent implements OnInit {
   }
 
   private createItem(formData: FormData) : void {
-    this.httpClient.post(`${API_URL}items/create`, formData).subscribe({
+    this.httpClient.post(getAPIUrl(`items/create`), formData).subscribe({
       next: (response) => {
         this.handleSuccess(response);
       },

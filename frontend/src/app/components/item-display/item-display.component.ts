@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
-import { API_URL } from '../../app.config';
+import { getAPIUrl } from '../../app.config';
 import { DatePipe } from '../../pipes/date.pipe';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../models/user';
@@ -57,7 +57,7 @@ export class ItemDisplayComponent implements OnInit {
   }
 
   private fetchItem(itemId : string) : void {
-    this.httpClient.get<Item>(`${API_URL}items/${itemId}`).subscribe({
+    this.httpClient.get<Item>(getAPIUrl(`items/${itemId}`)).subscribe({
       next: item => this.handleItemResponse(item),
       error: () => this.navigateToHome()
     });
@@ -70,16 +70,20 @@ export class ItemDisplayComponent implements OnInit {
 
   private setupButtons() : void {
     if (this.user && this.item) {
-      this.buttons = this.user.userId === this.item.ownerId
+      const isSold = this.item.isSold;
+      if (!isSold) {
+        this.buttons = this.user.userId === this.item.ownerId
         ? this.getOwnerButtons()
         : this.getDefaultButtons();
+      }
+
     }
   }
 
   private getDefaultButtons() : any[] {
     return [
       { icon: "✉️", class: "message", name: "Message the seller", click: () => {} },
-      { icon: "🛒", class: "buy", name: "Buy now", click: () => {} }
+      { icon: "🛒", class: "buy", name: "Buy now", click: () => this.confirmBuy() }
     ];
   }
 
@@ -106,19 +110,42 @@ export class ItemDisplayComponent implements OnInit {
     ];
   }
 
+  private confirmBuy() : void {
+    this.showConfirmation = [
+      {
+        message: "Are you sure you want to buy this item? This action cannot be undone.",
+        confirmButtonText: "Buy",
+        cancelButtonText: "Cancel",
+        confirm: () => this.buyItem(),
+        cancel: () => (this.showConfirmation = null)
+      }
+    ];
+  }
+
+  private buyItem() : void {
+    if (!this.itemId) return;
+
+    this.httpClient.post(getAPIUrl(`items/buy/${this.itemId}`), {})
+      .pipe(finalize(() => (this.showConfirmation = null)))
+      .subscribe({
+        next: response => this.handleSuccess(response),
+        error: error => this.handleError(error)
+    });
+  }
+
   private deleteItem() : void {
     if (!this.itemId) return;
 
     this.httpClient
-      .delete(`${API_URL}items/${this.itemId}`)
+      .delete(getAPIUrl(`items/${this.itemId}`))
       .pipe(finalize(() => (this.showConfirmation = null)))
       .subscribe({
-        next: response => this.handleDeleteSuccess(response),
-        error: error => this.handleDeleteError(error)
-      });
+        next: response => this.handleSuccess(response),
+        error: error => this.handleError(error)
+    });
   }
 
-  private handleDeleteSuccess(response: any) : void {
+  private handleSuccess(response: any) : void {
     InfoboxUtil.showMessage({
       message: response.message,
       type: 'success',
@@ -127,7 +154,7 @@ export class ItemDisplayComponent implements OnInit {
     this.navigateToHome();
   }
 
-  private handleDeleteError(error : any) : void {
+  private handleError(error : any) : void {
     const message = error.error?.message || 'An error occurred';
     InfoboxUtil.showMessage({
       message,

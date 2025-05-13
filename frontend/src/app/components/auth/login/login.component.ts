@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { API_URL } from '../../../app.config';
+import { getAPIUrl } from '../../../app.config';
 import { User } from '../../models/user';
 import { InfoboxUtil } from '../../../utils/infobox-util';
 
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
   }
 
   private login(username: string, password: string): void {
-    this.httpClient.post(`${API_URL}auth/login`, { username, password }, { headers: { 'skip-auth': 'true' } })
+    this.httpClient.post(getAPIUrl(`auth/login`), { username, password }, { headers: { 'skip-auth': 'true' } })
       .subscribe({
         next: (response: any) => this.handleLoginSuccess(response),
         error: (error) => this.handleLoginError(error)

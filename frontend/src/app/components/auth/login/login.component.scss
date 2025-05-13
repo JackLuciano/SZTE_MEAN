@@ -11,7 +11,7 @@
 .login-box {
   width: 100%;
   max-width: 400px;
-  background-color: #fff;
+  background: linear-gradient(135deg, #e0e0e0, #cfcfcf);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -65,6 +65,7 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
+      background: linear-gradient(135deg, #d0d0d0, #b0b0b0);
       transition: border-color 0.3s;
 
       &:focus {

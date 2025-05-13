@@ -3,7 +3,7 @@ import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 import { CommonModule } from '@angular/common';
-import { SITE_NAME } from '../../app.config';
+import { getSiteName } from '../../app.config';
 import { User } from '../models/user';
 import { InfoboxUtil } from '../../utils/infobox-util';
 
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
 
   routes : any[] = [];
   
-  shopName : string = SITE_NAME;
+  shopName : string = getSiteName();
 
   constructor(private authService : AuthService, private router : Router){}
 

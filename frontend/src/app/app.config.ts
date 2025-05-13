@@ -6,8 +6,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { routes } from './app.routes';
 
-export const API_URL = 'http://127.0.0.1:3000/';
-export const SITE_NAME = '🛒 MyMarket';
+const API_URL = 'http://127.0.0.1:3000/';
+export const getAPIUrl = (path: string) => `${API_URL}${path}`;
+
+const SITE_NAME = '🛒 MyMarket';
+export const getSiteName = () => SITE_NAME;
 
 export const appConfig: ApplicationConfig = {
   providers: [

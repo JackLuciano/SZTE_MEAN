@@ -40,4 +40,9 @@ export const routes: Routes = [
         canActivate: [tokenGuard],
         loadComponent: () => import('./components/new-item/new-item.component').then(m => m.NewItemComponent),
     },
+    {
+        path: 'my-items',
+        canActivate: [tokenGuard],
+        loadComponent: () => import('./components/my-items/my-items.component').then(m => m.MyItemsComponent),
+    }
 ];

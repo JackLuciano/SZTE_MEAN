@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { API_URL } from '../../../app.config';
+import { getAPIUrl } from '../../../app.config';
 import { InfoboxUtil } from '../../../utils/infobox-util';
 
 @Component({
@@ -53,7 +53,7 @@ export class ForgotPasswordComponent implements OnInit {
     const { email } = this.forgotPasswordForm.value;
 
     this.httpClient
-      .post(`${API_URL}auth/forgot-password`, { email }, { headers: { 'skip-auth': 'true' } })
+      .post(getAPIUrl(`auth/forgot-password`), { email }, { headers: { 'skip-auth': 'true' } })
       .subscribe({
         next: (response: any) => this.handleSuccess(response),
         error: (error) => this.handleError(error),
