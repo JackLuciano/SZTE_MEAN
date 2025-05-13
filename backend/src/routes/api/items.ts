@@ -55,12 +55,21 @@ router.post('/buy/:id', middleware, async (req: express.Request, res: express.Re
         if (!user) {
             return handleError(res, 401, 'Unauthorized');
         }
+
+        const owner: User | null = await User.findById(item.ownerId);
+        if (!owner) {
+            return handleError(res, 404, 'Owner not found');   
+        }
+
         if (user.balance < price) {
             return handleError(res, 400, 'Insufficient balance');
         }
 
         user.balance -= price;
         await user.save();
+
+        owner.balance += price;
+        await owner.save();
 
         await Item.buy(req.params.id, (req as any).user.userId);
         res.json({ message: 'Item bought successfully!' });

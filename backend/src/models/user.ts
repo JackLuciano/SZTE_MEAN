@@ -64,8 +64,8 @@ export class User {
         return this.findByField('username', username);
     }
 
-    static async findById(id: string): Promise<User | null> {
-        return this.findByField('_id', new ObjectId(id));
+    static async findById(id: string | ObjectId): Promise<User | null> {
+        return this.findByField('_id', typeof id === 'string' ? new ObjectId(id) : id);
     }
 
     static async findByEmail(email: string): Promise<User | null> {
