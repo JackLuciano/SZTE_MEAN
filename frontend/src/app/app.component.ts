@@ -51,8 +51,12 @@ export class AppComponent implements OnInit {
 
   private initializeServerStatus(): void {
     this.serverStatusService.getServerStatus().subscribe((status) => {
+      const oldStatus = this.serverStatus;
       this.serverStatus = status;
-      console.log('Server status changed to:', status);
+
+      if (oldStatus !== status) {
+        console.log('Server status changed to:', status);
+      }
     });
   }
 
