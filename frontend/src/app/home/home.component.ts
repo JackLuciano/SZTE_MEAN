@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   sortedItems: Item[] = [];
   categories: Category[] = categories;
   selectedCategory: Category = categories[0];
-  loadingItems = true;
+  loadingItems: boolean = true;
   user: User | null = null;
 
   constructor(private authService: AuthService, private httpClient: HttpClient) {}
