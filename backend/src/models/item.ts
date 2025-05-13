@@ -77,6 +77,15 @@ export class Item {
         return items.map(this.mapToItem);
     }
 
+    static async getAllItemsByOwner(ownerId: string): Promise<Item[]> {
+        const [myItems, boughItems] = await Promise.all([
+            this.findByField('ownerId', new ObjectId(ownerId)),
+            this.findByField('boughtBy', new ObjectId(ownerId)),
+        ]);
+        
+        return [...myItems, ...boughItems];
+    }
+
     static async create(
         name: string,
         description: string,
@@ -105,7 +114,7 @@ export class Item {
             createdAt: new Date(),
             category,
             lastUpdated: new Date(),
-            ownerId,
+            ownerId: new ObjectId(ownerId),
             location,
             tags,
             isSold: false,
