@@ -145,6 +145,16 @@ export class Item {
         await db.collection('items').updateOne({ _id: new ObjectId(id) }, { $set: { isDeleted: true } });
     }
 
+    static async buy(id: string, userId: string): Promise<void> {
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+
+        const item = await db.collection('items').findOne({ _id: new ObjectId(id) });
+        if (!item) throw new Error('Item not found');
+
+        await db.collection('items').updateOne({ _id: new ObjectId(id) }, { $set: { isSold: true, boughtBy: new ObjectId(userId) } });
+    }
+
     private static validateItemData(
         name: string,
         description: string,
