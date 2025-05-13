@@ -59,7 +59,7 @@ export class ItemDisplayComponent implements OnInit {
   private fetchItem(itemId : string) : void {
     this.httpClient.get<Item>(getAPIUrl(`items/${itemId}`)).subscribe({
       next: item => this.handleItemResponse(item),
-      error: () => this.navigateToHome()
+      error: (error) => this.navigateToHome(error)
     });
   }
 
@@ -164,7 +164,16 @@ export class ItemDisplayComponent implements OnInit {
     });
   }
 
-  private navigateToHome() : void {
+  private navigateToHome(error?: any) : void {
+    const message = error?.error?.message;
+    if (message) {
+      InfoboxUtil.showMessage({
+        message,
+        type: 'error',
+        duration: 3000
+      });
+    }
+
     this.router.navigate(['/']);
   }
 }
