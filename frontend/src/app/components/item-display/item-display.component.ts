@@ -71,7 +71,8 @@ export class ItemDisplayComponent implements OnInit {
   private setupButtons() : void {
     if (this.user && this.item) {
       const isSold = this.item.isSold;
-      if (!isSold) {
+      const isDeleted = this.item.isDeleted;
+      if (!isSold && !isDeleted) {
         this.buttons = this.user.userId === this.item.ownerId
         ? this.getOwnerButtons()
         : this.getDefaultButtons();
