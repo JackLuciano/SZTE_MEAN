@@ -1,23 +1,21 @@
 import express from 'express';
 import { Item } from '../../models/item';
-import { middleware } from '../protected';
+import { middleware, optionalMiddleware } from '../protected';
 import { ObjectId } from 'mongodb';
 import { UploadedFile } from 'express-fileupload';
 import { addLog } from '../../models/log';
 import { LogType } from '../../data/logTypes';
 import { User } from '../../models/user';
+import { handleError } from '../../models/error';
 
 const router = express.Router();
-
-const handleError = (res: express.Response, statusCode: number, message: string) => {
-    res.status(statusCode).json({ message });
-};
 
 router.get('/', async (req: express.Request, res: express.Response) => {
     try {
         const items: Item[] = await Item.getAllItems();
         res.json(items);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error fetching items:', error);
         handleError(res, 500, 'Failed to fetch items');
     }
 });
@@ -26,19 +24,34 @@ router.get('/my-items', middleware, async (req: express.Request, res: express.Re
     try {
         const items: Item[] = await Item.getAllItemsByOwner((req as any).user.userId);
         res.json(items);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error fetching items:', error);
         handleError(res, 500, 'Failed to fetch items');
     }
 });
 
-router.get('/:id', async (req: express.Request, res: express.Response) => {
+router.get('/:id', optionalMiddleware, async (req: express.Request, res: express.Response) => {
     try {
         const item: Item | null = await Item.findById(req.params.id);
         if (!item) {
             return handleError(res, 404, 'Item not found');
         }
+
+        if (item.isDeleted) {
+            const ownerId = item.ownerId;
+            const userId : ObjectId | null = (req as any).user?.userId;
+            if (!userId) {
+                return handleError(res, 401, 'Unauthorized');
+            }
+
+            if (!ownerId.equals(new ObjectId(userId))) {
+                return handleError(res, 404, 'Item not found');
+            }
+        }
+
         res.json(item);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error fetching item:', error);
         handleError(res, 500, 'Failed to fetch item');
     }
 });
@@ -87,7 +100,8 @@ router.post('/buy/:id', middleware, async (req: express.Request, res: express.Re
             { itemId: item._id },
             { userAgent: req.headers['user-agent'] },
         ]);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error buying item:', error);
         handleError(res, 500, 'Failed to buy item');
     }
 })
@@ -126,7 +140,8 @@ router.post('/create', middleware, async (req: express.Request, res: express.Res
             { ownerId: (req as any).user.userId },
             { userAgent: req.headers['user-agent'] },
         ]);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error creating item:', error);
         handleError(res, 500, 'Failed to create item');
     }
 });
@@ -149,7 +164,8 @@ router.delete('/:id', middleware, async (req: express.Request, res: express.Resp
             { itemId: item._id },
             { userAgent: req.headers['user-agent'] },
         ]);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error deleting item:', error);
         handleError(res, 500, 'Failed to delete item');
     }
 });
