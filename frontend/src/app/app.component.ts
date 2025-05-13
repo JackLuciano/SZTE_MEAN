@@ -13,6 +13,7 @@ import { InfoboxContainerComponent } from './components/infobox-container/infobo
 
 import { InfoboxUtil } from './utils/infobox-util';
 import { getSiteName, getAPIUrl } from './app.config';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -83,10 +84,13 @@ export class AppComponent implements OnInit {
       this.updatingUser.set(true);
     }, 1000));
     
-    this.httpClient.get(getAPIUrl(`auth/verify`)).subscribe(
-      (response: any) => {
+    this.httpClient.get(getAPIUrl(`auth/verify`)).pipe(
+      finalize(() => {
         clearTimeout(this.updateTimer());
         this.updatingUser.set(false);
+      })
+    ).subscribe(
+      (response: any) => {
         this.authService.setUser(response.user);
       },
     );
