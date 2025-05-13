@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class ItemComponent {
   @Input() item : Item | undefined;
   @Input() myItem : boolean = false;
+  @Input() boughtItem: boolean = false;
+  @Input() deletedItem: boolean = false;
 
   constructor(private router : Router) { }
 

@@ -5,7 +5,13 @@
         <p>Price: <span class="price">${{ item!.price }}</span></p>
         <p>Location: {{ item!.location }}</p>
         @if (myItem) {
-            <p style="color: rgb(37, 179, 18);"><br><b>Your item</b></p>
+            <p style="color: rgb(0, 128, 0);"><br><b>Your item</b></p>
+        }
+        @if (boughtItem) {
+            <p style="color: rgb(50, 50, 255);"><br><b>Item bought</b></p>
+        }
+        @if (deletedItem) {
+            <p style="color: rgb(255, 0, 0);"><br><b>Item deleted</b></p>
         }
     </div>
 
