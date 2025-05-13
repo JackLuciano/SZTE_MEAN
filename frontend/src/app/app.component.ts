@@ -66,24 +66,27 @@ export class AppComponent implements OnInit {
 
   private initializeUser(): void {
     const user = localStorage.getItem('user');
-    if (user) {
-      this.authService.setUser(user);
-    }
+    if (!user)
+      return;
+
+    this.authService.setUser(user);
   }
 
   private verifyToken(): void {
     const token = localStorage.getItem('token');
-    if (token) {
-      this.updateTimer = setTimeout(() => {
-        this.updatingUser = true;
-      }, 1000);
-      this.httpClient.get(getAPIUrl(`auth/verify`)).subscribe(
-        (response: any) => {
-          clearTimeout(this.updateTimer);
-          this.updatingUser = false;
-          this.authService.setUser(response.user);
-        },
-      );
-    }
+    if (!token)
+      return;
+
+    this.updateTimer = setTimeout(() => {
+      this.updatingUser = true;
+    }, 1000);
+    
+    this.httpClient.get(getAPIUrl(`auth/verify`)).subscribe(
+      (response: any) => {
+        clearTimeout(this.updateTimer);
+        this.updatingUser = false;
+        this.authService.setUser(response.user);
+      },
+    );
   }
 }
