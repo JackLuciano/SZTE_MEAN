@@ -14,6 +14,7 @@ export class Item {
     location : string;
     tags : string[];
     isSold : boolean;
+    boughtBy : string | null;
     isDeleted : boolean;
 
     constructor(item : {
@@ -29,6 +30,7 @@ export class Item {
         location : string;
         tags : string[];
         isSold : boolean;
+        boughtBy : string | null;
         isDeleted : boolean;
     }) {
         this._id = item._id;
@@ -59,6 +61,7 @@ export class Item {
         this.location = item.location;
         this.tags = item.tags;
         this.isSold = item.isSold;
+        this.boughtBy = item.boughtBy;
         this.isDeleted = item.isDeleted;
     }
 }
