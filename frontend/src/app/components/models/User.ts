@@ -41,6 +41,7 @@ export class User {
             json.profilePicture,
             json.onlineStatus,
             json.balance,
+            json.role
         );
     }
 }
