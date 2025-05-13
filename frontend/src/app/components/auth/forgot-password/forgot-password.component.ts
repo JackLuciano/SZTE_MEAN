@@ -1,5 +1,5 @@
+import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -13,8 +13,8 @@ import { InfoboxUtil } from '../../../utils/infobox-util';
   styleUrl: './forgot-password.component.scss'
 })
 export class ForgotPasswordComponent implements OnInit {
-  forgotPasswordForm!: FormGroup;
-  message: string = '';
+  forgotPasswordForm = signal<FormGroup | null>(null);
+  message = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
@@ -27,9 +27,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   private initializeForm(): void {
-    this.forgotPasswordForm = this.fb.group({
+    this.forgotPasswordForm = signal(this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-    });
+    }));
   }
 
   backToLogin(): void {
@@ -37,8 +37,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.isFormInvalid()) {
-      this.message = 'Please fill in all required fields.';
+    const form = this.forgotPasswordForm();
+    if (!form || this.isFormInvalid()) {
+      this.message.set('Please fill in all required fields.');
       return;
     }
 
@@ -46,11 +47,11 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   private isFormInvalid(): boolean {
-    return this.forgotPasswordForm.invalid;
+    return this.forgotPasswordForm()!.invalid;
   }
 
   private sendForgotPasswordRequest(): void {
-    const { email } = this.forgotPasswordForm.value;
+    const { email } = this.forgotPasswordForm()!.value;
 
     this.httpClient
       .post(getAPIUrl(`auth/forgot-password`), { email }, { headers: { 'skip-auth': 'true' } })

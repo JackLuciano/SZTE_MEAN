@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Item } from '../models/item';
@@ -14,44 +14,41 @@ import { ItemComponent } from '../cards/item/item.component';
   styleUrl: './my-items.component.scss'
 })
 export class MyItemsComponent implements OnInit {
-  items: Item[] = [];
-  sortedItems: Item[] = [];
-  user: User | null = null;
-  loadingItems: boolean = true;
+  items = signal<Item[]>([]);
+  sortedItems = signal<Item[]>([]);
+  user = signal<User | null>(null);
+  loadingItems = signal<boolean>(false);
 
   constructor(
     private authService: AuthService,
     private httpClient: HttpClient
-  ) {}
-
-  ngOnInit(): void {
-    this.subscribeToUser();
-    this.fetchItems();
-  }
-
-  private subscribeToUser(): void {
-    this.authService.user$.subscribe(user => {
-      this.user = user;
+  ) {
+    effect(() => {
+      const user = this.authService.userSignal();
+      this.user.set(user);
       this.sortItems();
     });
-  };
+  }
+
+  ngOnInit(): void {
+    this.fetchItems();
+  }
   
   fetchItems(): void {
-    this.loadingItems = true;
-    this.items = [];
-    this.sortedItems = [];
+    this.loadingItems.set(true);
+    this.items.set([]);
+    this.sortedItems.set([]);
 
     this.httpClient.get<Item[]>(getAPIUrl('items/my-items')).subscribe({
       next: (response: Item[]) => {
-        this.items = response.map(item => new Item(item));
-        console.log(this.items)
+        this.items.set(response.map(item => new Item(item)));
         this.sortItems();
-        this.loadingItems = false;
+        this.loadingItems.set(false);
       }
     });
   };
 
   private sortItems(): void {
-    this.sortedItems = this.items.sort((a, b) => a.price - b.price);
+    this.sortedItems.set(this.items().sort((a, b) => a.price - b.price));
   }
 }

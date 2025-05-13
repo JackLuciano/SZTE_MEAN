@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
 
 export interface InfoboxMessage {
   message: string;
@@ -11,20 +10,23 @@ export interface InfoboxMessage {
   providedIn: 'root',
 })
 export class InfoboxService {
-  private infoboxSubject = new BehaviorSubject<InfoboxMessage[]>([]);
-  readonly message$ = this.infoboxSubject.asObservable();
+  private infoboxSignalInternal = signal<InfoboxMessage[]>([]);
+
+  constructor() {
+    this.infoboxSignalInternal.set([]);
+  }
+
+  messages = computed(() => this.infoboxSignalInternal());
 
   show(message: InfoboxMessage): void {
-    const updatedMessages = [...this.infoboxSubject.value, message];
-    this.infoboxSubject.next(updatedMessages);
+    this.infoboxSignalInternal.set([...this.infoboxSignalInternal(), message]);
   }
 
   remove(index: number): void {
-    const updatedMessages = this.infoboxSubject.value.filter((_, i) => i !== index);
-    this.infoboxSubject.next(updatedMessages);
+    this.infoboxSignalInternal.set(this.infoboxSignalInternal().filter((_, i) => i !== index));
   }
 
   removeAll(): void {
-    this.infoboxSubject.next([]);
+    this.infoboxSignalInternal.set([]);
   }
 }

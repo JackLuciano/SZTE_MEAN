@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { getAPIUrl } from '../../app.config';
 import { InfoboxUtil } from '../../utils/infobox-util';
@@ -15,10 +15,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './new-item.component.scss'
 })
 export class NewItemComponent implements OnInit {
-  newItemForm!: FormGroup;
-  selectedFiles: File[] = [];
-  message: string | null = null;
-  categories: Category[] = [];
+  newItemForm = signal<FormGroup | null>(null);
+  selectedFiles = signal<File[]>([]);
+  message = signal<string | null>(null);
+  categories = signal<Category[]>([]);
 
   constructor(
     private httpClient : HttpClient, 
@@ -27,23 +27,23 @@ export class NewItemComponent implements OnInit {
   ) {}
 
   private initializeForm() : void {
-    this.newItemForm = this.formBuilder.group({
+    this.newItemForm.set(this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
       price: ['', [Validators.required, Validators.min(0)]],
       category: ['', [Validators.required]],
       location: ['', [Validators.required]],
       tags: this.formBuilder.array([]),
-    })
+    }))
   }
   ngOnInit() : void {
     this.initializeForm();
-    this.categories = categories;
+    this.categories.set(categories);
   }
 
   private createFormData() : FormData {
     const formData = new FormData();
-    const { name, description, price, category, location } = this.newItemForm.value;
+    const { name, description, price, category, location } = this.newItemForm()?.value;
 
     formData.append('name', name);
     formData.append('description', description);
@@ -51,7 +51,7 @@ export class NewItemComponent implements OnInit {
     formData.append('category', categories[category].slug);
     formData.append('location', location);
 
-    this.selectedFiles.forEach(file => {
+    this.selectedFiles().forEach(file => {
       formData.append('files', file);
     });
 
@@ -63,7 +63,7 @@ export class NewItemComponent implements OnInit {
   }
 
   onSubmit() : void {
-    if (this.newItemForm.invalid) {
+    if (this.newItemForm()?.invalid) {
       this.displayMessage('Please fill in all required fields.');
       return;
     }
@@ -85,11 +85,11 @@ export class NewItemComponent implements OnInit {
 
   onFilesSelected(event: Event) : void {
     const fileInput = event.target as HTMLInputElement;
-    this.selectedFiles = Array.from(fileInput.files || []);
+    this.selectedFiles.set(Array.from(fileInput.files || []));
   }
 
   get tagsFormArray() : FormArray {
-    return this.newItemForm.get('tags') as FormArray;
+    return this.newItemForm()?.get('tags') as FormArray;
   }
 
   addTag(input: HTMLInputElement) : void {
@@ -127,9 +127,9 @@ export class NewItemComponent implements OnInit {
   }
 
   private displayMessage(message: string) : void {
-    this.message = message;
+    this.message.set(message);
     setTimeout(() => {
-      this.message = null;
+      this.message.set(null);
     }, 3000);
   }
 }

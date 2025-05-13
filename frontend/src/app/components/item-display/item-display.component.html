@@ -1,7 +1,7 @@
 
 <div class="wrapper">
     <div class="item-container">
-        @if (!item) {
+        @if (!item()) {
             <div class="loading-screen">
                 <div class="loader"></div>
                 <p>Loading item...</p>
@@ -13,30 +13,30 @@
             <div class="informations">
                 <div class="name">
                     <div class="background">
-                        <p>{{ item!.name }}</p>
+                        <p>{{ item()!.name }}</p>
                     </div>
                 </div>
                 <div class="description">
                     <div class="background">
-                        <p>{{ item!.description }}</p>
+                        <p>{{ item()!.description }}</p>
                     </div>
                 </div>
             </div>
             <div class="price">
                 <div class="background">
-                    <p>${{ item!.price }}</p>
+                    <p>${{ item()!.price }}</p>
                 </div>
             </div>
             <div class="tags">
-                @for (tag of item!.tags; track tag) {
+                @for (tag of item()!.tags; track tag) {
                     <span class="tag">{{ tag }}</span>
                 }
-                <span class="tag">Category: {{ item!.category.name }}</span>
-                <span class="tag">Location: {{ item!.location }}</span>
+                <span class="tag">Category: {{ item()!.category.name }}</span>
+                <span class="tag">Location: {{ item()!.location }}</span>
             </div>
-            @if (this.isAuthenticated) {
+            @if (this.isAuthenticated()) {
                 <div class="buttons">
-                    @for (button of this.buttons; track button) {
+                    @for (button of this.buttons(); track button) {
                         <button class="{{ button.class }}" (click)="button.click()">
                             <i class="icon">{{ button.icon }}</i>
                             <span>{{ button.name }}</span>
@@ -46,18 +46,20 @@
             }
             
             <div class="created-at">
-                Created at: {{ item!.createdAt | hungarianDate }}<br>
-                Last modified at: {{ item!.lastUpdated | hungarianDate }}
+                Created at: {{ item()!.createdAt | hungarianDate }}<br>
+                Last modified at: {{ item()!.lastUpdated | hungarianDate }}
             </div>
 
-            @if (showConfirmation) {
-                <app-confirm-dialog
-                    [message]="showConfirmation[0].message"
-                    [confirmButtonText]="showConfirmation[0].confirmButtonText"
-                    [cancelButtonText]="showConfirmation[0].cancelButtonText"
-                    (confirm)="showConfirmation[0].confirm()"
-                    (cancel)="showConfirmation[0].cancel()">
-                </app-confirm-dialog>
+            @if (showConfirmation()) {
+                <ng-container *ngIf="showConfirmation()?.[0] as confirmation">
+                    <app-confirm-dialog
+                        [message]="confirmation.message"
+                        [confirmButtonText]="confirmation.confirmButtonText"
+                        [cancelButtonText]="confirmation.cancelButtonText"
+                        (confirm)="confirmation.confirm()"
+                        (cancel)="confirmation.cancel()">
+                    </app-confirm-dialog>
+                </ng-container>
             }
         }
     </div>

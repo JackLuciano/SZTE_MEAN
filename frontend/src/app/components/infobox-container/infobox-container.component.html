@@ -1,11 +1,9 @@
 <div class="infobox-container">
-    <div *ngFor="let msg of infoboxService.message$ | async">
-      <app-infobox
-        *ngFor="let box of infoboxes; let i = index"
-        [message]="box.message"
-        [type]="box.type"
-        [duration]="box.duration"
-        (closed)="removeMessage(i)">
-      </app-infobox>
-    </div>
+    <app-infobox
+      *ngFor="let box of infoboxes(); let i = index"
+      [message]="box.message"
+      [type]="box.type"
+      [duration]="box.duration"
+      (closed)="removeMessage(i)">
+    </app-infobox>
 </div>

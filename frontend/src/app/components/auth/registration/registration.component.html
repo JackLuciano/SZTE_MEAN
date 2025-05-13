@@ -1,7 +1,7 @@
 <div class="registration-wrapper">
     <div class="registration-box">
         <h2>Registration</h2>
-        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registrationForm()!" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input
@@ -75,6 +75,6 @@
             <button type="submit">registration</button>
         </form>
   
-        <div class="error-message">{{ message }}</div>
+        <div class="error-message">{{ message() }}</div>
     </div>
 </div>

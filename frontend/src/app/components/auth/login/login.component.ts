@@ -1,5 +1,5 @@
+import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -14,8 +14,8 @@ import { InfoboxUtil } from '../../../utils/infobox-util';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
-  message: string = '';
+  loginForm = signal<FormGroup | null>(null);
+  message = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
@@ -29,10 +29,10 @@ export class LoginComponent implements OnInit {
   }
 
   private initializeForm(): void {
-    this.loginForm = this.fb.group({
+    this.loginForm = signal(this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
-    });
+    }));
   }
 
   forgotPassword(): void {
@@ -45,16 +45,20 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const { username, password } = this.loginForm.value;
+    const form = this.loginForm();
+    if (!form)
+      return;
+
+    const { username, password } = form.value;
     this.login(username, password);
   }
 
   private isFormInvalid(): boolean {
-    return this.loginForm.invalid;
+    return this.loginForm()!.invalid;
   }
 
   private displayMessage(message: string): void {
-    this.message = message;
+    this.message.set(message);
   }
 
   private login(username: string, password: string): void {

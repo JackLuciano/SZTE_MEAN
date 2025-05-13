@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { InfoboxService } from '../../services/infobox.service';
 import { InfoboxComponent } from '../infobox/infobox.component';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './infobox-container.component.scss'
 })
 export class InfoboxContainerComponent implements OnInit {
-  constructor(public infoboxService : InfoboxService) {}
-  infoboxes : any[] = [];
+  constructor(public infoboxService : InfoboxService) {
+    effect(() => {
+      this.infoboxes.set(this.infoboxService.messages());
+    });
+  }
+  infoboxes = signal<any[]>([]);
 
   ngOnInit() : void {
-    this.infoboxService.message$.subscribe((messages) => {
-      this.infoboxes = messages;
-    });
+    
   }
 
   removeMessage(index : number) : void {

@@ -1,16 +1,16 @@
 <div class="wrapper">
     <div class="categories-container">
-        <ng-container *ngFor="let category of categories">
+        <ng-container *ngFor="let category of categories()">
             <a 
                 [id]="category._id"
-                [class.active]="selectedCategory._id === category._id" 
+                [class.active]="selectedCategory()._id === category._id" 
                 (click)="selectCategory(category._id)">
                 {{ category.name }}
             </a>
         </ng-container>
     </div>
     <div class="items-container">
-        @if (loadingItems) {
+        @if (loadingItems()) {
             <div class="loading-screen">
                 <div class="loader"></div>
                 <p>Loading items...</p>
@@ -19,15 +19,15 @@
             <div class="items-refresh">
                 <button (click)="fetchItems()">Refresh items</button>
             </div>
-            @if (sortedItems.length === 0) {
+            @if (sortedItems().length === 0) {
                 <div class="no-items">
                     <p>No items found in this category.</p>
                 </div>
             } @else {
-                <ng-container *ngFor="let item of sortedItems">
+                <ng-container *ngFor="let item of sortedItems()">
                     <app-item class="item" 
                         [item]="item"
-                        [myItem]="user?.userId === item.ownerId"
+                        [myItem]="user()?.userId === item.ownerId"
                         >
                     </app-item>
                 </ng-container>

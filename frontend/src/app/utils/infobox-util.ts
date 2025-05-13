@@ -1,16 +1,18 @@
+import { signal } from '@angular/core';
 import { InfoboxService, InfoboxMessage } from '../services/infobox.service';
 
 export class InfoboxUtil {
-    private static infoboxService: InfoboxService | null = null;
+    private static infoboxService = signal<InfoboxService | null>(null);
 
     static initialize(service: InfoboxService): void {
-        this.infoboxService = service;
+        this.infoboxService.set(service);
     }
 
     static showMessage(message: InfoboxMessage): void {
-        if (!this.infoboxService) {
+        const infoboxService: InfoboxService | null = this.infoboxService();
+        if (!infoboxService) 
             return;
-        }
-        this.infoboxService.show(message);
+        
+        infoboxService.show(message);
     }
 }

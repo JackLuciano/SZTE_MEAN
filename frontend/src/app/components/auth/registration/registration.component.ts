@@ -1,5 +1,5 @@
+import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getAPIUrl } from '../../../app.config';
@@ -12,9 +12,9 @@ import { InfoboxUtil } from '../../../utils/infobox-util';
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent implements OnInit {
-  registrationForm!: FormGroup;
-  selectedFile: File | null = null;
-  message: string = '';
+  registrationForm = signal<FormGroup | null>(null);
+  selectedFile = signal<File | null>(null);
+  message = signal<string | null>(null);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,28 +27,29 @@ export class RegistrationComponent implements OnInit {
   }
 
   private initializeForm(): void {
-    this.registrationForm = this.formBuilder.group({
+    this.registrationForm.set(this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', Validators.required],
       secondName: ['', Validators.required],
       password: ['', Validators.required],
       password2: ['', Validators.required],
-    });
+    }));
   }
 
   onFileSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
-    this.selectedFile = fileInput.files ? fileInput.files[0] : null;
+    this.selectedFile.set(fileInput.files ? fileInput.files[0] : null);
   }
 
   onSubmit(): void {
-    if (this.registrationForm.invalid) {
+    const form = this.registrationForm();
+    if (!form || form.invalid) {
       this.displayMessage('Please fill in all required fields.');
       return;
     }
 
-    const { password, password2 } = this.registrationForm.value;
+    const { password, password2 } = form.value;
     if (password !== password2) {
       this.displayMessage('Passwords do not match.');
       return;
@@ -59,8 +60,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   private createFormData(): FormData {
+    const form = this.registrationForm();
+    if (!form) {
+      throw new Error('Form is not initialized');
+    }
+
     const formData = new FormData();
-    const { username, email, firstName, secondName, password, password2 } = this.registrationForm.value;
+    const { username, email, firstName, secondName, password, password2 } = form.value;
 
     formData.append('username', username);
     formData.append('email', email);
@@ -70,7 +76,11 @@ export class RegistrationComponent implements OnInit {
     formData.append('password2', password2);
 
     if (this.selectedFile) {
-      formData.append('profilePicture', this.selectedFile, this.selectedFile.name);
+      const file = this.selectedFile();
+
+      if (file) {
+        formData.append('profilePicture', file, file.name);
+      }
     }
 
     return formData;
@@ -102,6 +112,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   private displayMessage(message: string): void {
-    this.message = message;
+    this.message.set(message);
   }
 }

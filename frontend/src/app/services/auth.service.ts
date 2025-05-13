@@ -1,53 +1,59 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { User } from '../components/models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private authenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
-  private userSubject = new BehaviorSubject<User | null>(null);
+  private token = signal<string | null>(localStorage.getItem('token'));
+  private userSignalInternal = signal<User | null>(null);
 
-  constructor() {}
-
-  get authenticated$(): Observable<boolean> {
-    return this.authenticatedSubject.asObservable();
+  constructor() {
+    effect(() => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser && this.isAuthenticated()) {
+        this.setUser(storedUser);
+      } else {
+        this.clearUser();
+      }
+    });
   }
 
-  get user$(): Observable<User | null> {
-    return this.userSubject.asObservable();
-  }
-
-  private checkToken(): boolean {
-    const token = localStorage.getItem('token');
-    return !!token && token.trim() !== '';
-  }
+  userSignal = computed(() => this.userSignalInternal());
+  isAuthenticated = computed(() => {
+    const tokenValue = this.token();
+    return !!tokenValue && tokenValue.trim() !== '';
+  });
 
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.authenticatedSubject.next(false);
+    this.token.set(null);
     this.clearUser();
   }
 
   setToken(token: string): void {
     localStorage.setItem('token', token);
-    this.authenticatedSubject.next(true);
+    this.token.set(token);
   }
 
   setUser(userData: string | null = null): void {
-    const parsedUser = userData ? (typeof userData === 'string' ? JSON.parse(userData) : userData) : null;
-    const user = parsedUser ? User.fromJson(parsedUser) : null;
+    const parsedUser =
+      userData && typeof userData === 'string'
+        ? JSON.parse(userData)
+        : userData;
 
-    this.userSubject.next(user);
+    const user = parsedUser ? User.fromJson(parsedUser) : null;
+    this.userSignalInternal.set(user);
 
     if (!user) {
       this.logout();
+    } else {
+      localStorage.setItem('user', JSON.stringify(parsedUser));
     }
   }
 
   private clearUser(): void {
-    this.userSubject.next(null);
+    this.userSignalInternal.set(null);
   }
 }

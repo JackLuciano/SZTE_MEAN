@@ -1,28 +1,34 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, effect, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
 import { getAPIUrl } from '../app.config';
+import { catchError, map, of } from 'rxjs';
+import { timer } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServerStatusService {
+  private readonly http = signal<HttpClient>(inject(HttpClient));
 
-  private readonly healthCheckInterval = 5000;
-  private readonly healthEndpoint = getAPIUrl(`health`);
+  private readonly healthCheckInterval = signal<number>(5000);
+  private readonly healthEndpoint = signal<string>(getAPIUrl(`health`));
 
-  constructor(private http: HttpClient) {}
+  readonly serverOnline = signal<boolean>(true);
 
-  getServerStatus(): Observable<boolean> {
-    return timer(0, this.healthCheckInterval).pipe(
-      switchMap(() => this.checkServerHealth())
-    );
+  constructor() {
+    effect(() => {
+      timer(0, this.healthCheckInterval()).subscribe(() => {
+        this.http().get(this.healthEndpoint()).pipe(
+          map(() => true),
+          catchError(() => of(false))
+        ).subscribe((status) => {
+          this.serverOnline.set(status);
+        });
+      });
+    });
   }
 
-  private checkServerHealth(): Observable<boolean> {
-    return this.http.get(this.healthEndpoint).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+  getServerStatus(): boolean {
+    return this.serverOnline();
   }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
@@ -6,54 +7,55 @@ import { getAPIUrl } from '../../app.config';
 import { DatePipe } from '../../pipes/date.pipe';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../models/user';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../cards/confirm-dialog/confirm-dialog.component';
 import { finalize } from 'rxjs';
 import { InfoboxUtil } from '../../utils/infobox-util';
 
 @Component({
   selector: 'app-item-display',
-  imports: [DatePipe, ConfirmDialogComponent],
+  imports: [DatePipe, CommonModule, ConfirmDialogComponent],
   templateUrl: './item-display.component.html',
   styleUrl: './item-display.component.scss'
 })
 export class ItemDisplayComponent implements OnInit {
-  itemId : string | null = null;
-  item : Item | undefined;
-  showConfirmation : any[] | null = null;
-  buttons : any[] = [];
-  isAuthenticated : boolean = false;
-  user : User | null = null;
+  itemId = signal<string | null>(null);
+  item = signal<Item | null>(null);
+  showConfirmation = signal<any[] | null>(null);
+  buttons = signal<any[]>([]);
+  isAuthenticated = signal(false);
+  user = signal<User | null>(null);
 
   constructor(
     private route : ActivatedRoute,
     private router : Router,
     private httpClient : HttpClient,
     private authService : AuthService
-  ) {}
+  ) {
+    effect(() => {
+      const auth = this.authService.isAuthenticated();
+      this.isAuthenticated.set(auth);
+    });
+
+    effect(() => {
+      const user = this.authService.userSignal();
+      this.user.set(user);
+    });
+  }
 
   ngOnInit() : void {
-    this.subscribeToUser();
     this.loadItem();
   }
 
-  private subscribeToUser() : void {
-    this.authService.authenticated$.subscribe(authenticated => {
-      this.isAuthenticated = authenticated;
-    });
-
-    this.authService.user$.subscribe(user => {
-      this.user = user;
-    });
-  }
-
   private loadItem() : void {
-    this.itemId = this.route.snapshot.paramMap.get('id');
-    if (!this.itemId) {
+    this.itemId.set(this.route.snapshot.paramMap.get('id'));
+
+    const itemId = this.itemId();
+    if (!itemId) {
       this.navigateToHome();
       return;
     }
 
-    this.fetchItem(this.itemId);
+    this.fetchItem(itemId);
   }
 
   private fetchItem(itemId : string) : void {
@@ -64,18 +66,20 @@ export class ItemDisplayComponent implements OnInit {
   }
 
   private handleItemResponse(item : Item) : void {
-    this.item = new Item(item);
+    this.item.set(new Item(item));
     this.setupButtons();
   }
 
   private setupButtons() : void {
-    if (this.user && this.item) {
-      const isSold = this.item.isSold;
-      const isDeleted = this.item.isDeleted;
+    const user = this.user();
+    const item = this.item();
+    if (user && item) {
+      const isSold = item.isSold;
+      const isDeleted = item.isDeleted;
       if (!isSold && !isDeleted) {
-        this.buttons = this.user.userId === this.item.ownerId
+        this.buttons.set(user.userId === item.ownerId
         ? this.getOwnerButtons()
-        : this.getDefaultButtons();
+        : this.getDefaultButtons());
       }
 
     }
@@ -100,34 +104,35 @@ export class ItemDisplayComponent implements OnInit {
   }
 
   private confirmDelete() : void {
-    this.showConfirmation = [
+    this.showConfirmation.set([
       {
         message: "Are you sure you want to delete this item?",
         confirmButtonText: "Delete",
         cancelButtonText: "Cancel",
         confirm: () => this.deleteItem(),
-        cancel: () => (this.showConfirmation = null)
+        cancel: () => (this.showConfirmation.set(null))
       }
-    ];
+    ]);
   }
 
   private confirmBuy() : void {
-    this.showConfirmation = [
+    this.showConfirmation.set([
       {
         message: "Are you sure you want to buy this item? This action cannot be undone.",
         confirmButtonText: "Buy",
         cancelButtonText: "Cancel",
         confirm: () => this.buyItem(),
-        cancel: () => (this.showConfirmation = null)
+        cancel: () => (this.showConfirmation.set(null))
       }
-    ];
+    ]);
   }
 
   private buyItem() : void {
-    if (!this.itemId) return;
+    const itemId = this.itemId();
+    if (!itemId) return;
 
-    this.httpClient.post(getAPIUrl(`items/buy/${this.itemId}`), {})
-      .pipe(finalize(() => (this.showConfirmation = null)))
+    this.httpClient.post(getAPIUrl(`items/buy/${itemId}`), {})
+      .pipe(finalize(() => (this.showConfirmation.set(null))))
       .subscribe({
         next: response => this.handleSuccess(response),
         error: error => this.handleError(error)
@@ -135,11 +140,12 @@ export class ItemDisplayComponent implements OnInit {
   }
 
   private deleteItem() : void {
-    if (!this.itemId) return;
+    const itemId = this.itemId();
+    if (!itemId) return;
 
     this.httpClient
-      .delete(getAPIUrl(`items/${this.itemId}`))
-      .pipe(finalize(() => (this.showConfirmation = null)))
+      .delete(getAPIUrl(`items/${itemId}`))
+      .pipe(finalize(() => (this.showConfirmation.set(null))))
       .subscribe({
         next: response => this.handleSuccess(response),
         error: error => this.handleError(error)

@@ -1,9 +1,9 @@
 <header class="app-header">
     <div class="header-container">
-      <div class="logo" routerLink="/">{{ shopName }}</div>
+      <div class="logo" routerLink="/">{{ shopName() }}</div>
   
-      <nav class="nav-links" [class.open]="menuOpen">
-        @for (route of routes; track route.name) {
+      <nav class="nav-links" [class.open]="menuOpen()">
+        @for (route of routes(); track route.name) {
           @if (!route.show || route.show()) {
             @if (route.routerLink) {
               <a [routerLink]="route.routerLink" class="nav-link">
@@ -18,15 +18,15 @@
             }
           }
         }
-        <div class="user-balance" *ngIf="isAuthenticated">
-          <span class="balance-amount">${{ user?.balance }}</span>
+        <div class="user-balance" *ngIf="isAuthenticated()">
+          <span class="balance-amount">${{ user()?.balance }}</span>
           <span class="balance-label">Balance</span>
         </div>
       </nav>
   
       <div class="header-right">
-        <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Toggle menu">
-          <span [class.active]="menuOpen"></span>
+        <button class="menu-btn" (click)="menuOpen.set(!menuOpen())" aria-label="Toggle menu">
+          <span [class.active]="menuOpen()"></span>
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
@@ -21,9 +21,9 @@ import { getSiteName, getAPIUrl } from './app.config';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  serverStatus: boolean = false;
-  updatingUser: boolean = false;
-  updateTimer: any;
+  serverStatus = signal<boolean>(false);
+  updatingUser = signal<boolean>(false);
+  updateTimer = signal<any>(null);
 
   constructor(
     private infoboxService: InfoboxService,
@@ -31,33 +31,35 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private authService: AuthService,
     private httpClient: HttpClient,
-    private router: Router
   ) {
     this.initializeInfobox();
+
+    effect(() => {
+      const oldStatus = this.serverStatus();
+      this.serverStatus.set(this.serverStatusService.getServerStatus());
+
+      if (oldStatus !== this.serverStatus()) {
+        console.log('Server status changed to:', this.serverStatus());
+      }
+    })
   }
 
   ngOnInit(): void {
-    this.initializeServerStatus();
     this.setPageTitle();
     this.initializeUser();
     this.verifyToken();
 
     setInterval(() => this.verifyToken(), 5000);
+
+    // this.infoboxService.show({
+    //   message: 'Welcome to the application!',
+    //   type: 'success',
+    //   duration: 3000
+    // });
   }
 
   private initializeInfobox(): void {
     InfoboxUtil.initialize(this.infoboxService);
-  }
-
-  private initializeServerStatus(): void {
-    this.serverStatusService.getServerStatus().subscribe((status) => {
-      const oldStatus = this.serverStatus;
-      this.serverStatus = status;
-
-      if (oldStatus !== status) {
-        console.log('Server status changed to:', status);
-      }
-    });
   }
 
   private setPageTitle(): void {
@@ -77,14 +79,14 @@ export class AppComponent implements OnInit {
     if (!token)
       return;
 
-    this.updateTimer = setTimeout(() => {
-      this.updatingUser = true;
-    }, 1000);
+    this.updateTimer.set(setTimeout(() => {
+      this.updatingUser.set(true);
+    }, 1000));
     
     this.httpClient.get(getAPIUrl(`auth/verify`)).subscribe(
       (response: any) => {
-        clearTimeout(this.updateTimer);
-        this.updatingUser = false;
+        clearTimeout(this.updateTimer());
+        this.updatingUser.set(false);
         this.authService.setUser(response.user);
       },
     );

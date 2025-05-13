@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="items-container">
-        @if (loadingItems) {
+        @if (loadingItems()) {
             <div class="loading-screen">
                 <div class="loader"></div>
                 <p>Loading items...</p>
@@ -9,17 +9,17 @@
             <div class="items-refresh">
                 <button (click)="fetchItems()">Refresh items</button>
             </div>
-            @if (sortedItems.length === 0) {
+            @if (sortedItems().length === 0) {
                 <div class="no-items">
                     <p>No items found in this category.</p>
                 </div>
             } @else {
-                <ng-container *ngFor="let item of sortedItems">
+                <ng-container *ngFor="let item of sortedItems()">
                     <app-item class="item" 
                         [item]="item"
-                        [myItem]="user?.userId === item.ownerId"
-                        [boughtItem]="user?.userId === item?.boughtBy"
-                        [deletedItem]="user?.userId === item.ownerId && item.isDeleted"
+                        [myItem]="user()?.userId === item.ownerId"
+                        [boughtItem]="user()?.userId === item?.boughtBy"
+                        [deletedItem]="user()?.userId === item.ownerId && item.isDeleted"
                         >
                     </app-item>
                 </ng-container>

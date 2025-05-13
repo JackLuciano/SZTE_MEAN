@@ -1,7 +1,7 @@
 <div class="new-item-wrapper">
     <div class="new-item-box">
         <h2>Create new item</h2>
-        <form [formGroup]="newItemForm" (ngSubmit)="onSubmit()">
+        <form *ngIf="newItemForm()" [formGroup]="newItemForm()!" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="name">Item name</label>
                 <input
@@ -46,7 +46,7 @@
             <div class="form-group">
                 <label for="category">Category</label>
                 <select id="category" formControlName="category">
-                    <option *ngFor="let category of categories" [value]="category._id">
+                    <option *ngFor="let category of categories()" [value]="category._id">
                         {{ category.name }}
                     </option>
                 </select>
@@ -86,6 +86,6 @@
             <button type="submit">Create</button>
         </form>
   
-        <div class="error-message">{{ message }}</div>
+        <div class="error-message">{{ message() }}</div>
     </div>
 </div>

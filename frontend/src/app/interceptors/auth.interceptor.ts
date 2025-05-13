@@ -1,4 +1,5 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
@@ -6,19 +7,19 @@ import { inject } from '@angular/core';
 import { InfoboxUtil } from '../utils/infobox-util';
 
 export const AuthInterceptor: HttpInterceptorFn = (request, next) => {
-  const router = inject(Router);
-  const authService = inject(AuthService);
-  const token = localStorage.getItem('token');
+  const router = signal<Router>(inject(Router));
+  const authService = signal<AuthService>(inject(AuthService));
+  const token = signal<string | null>(localStorage.getItem('token'));
 
   if (shouldSkipAuth(request)) {
     return next(request);
   }
 
-  const authorizedRequest = addAuthorizationHeader(request, token);
+  const authorizedRequest = addAuthorizationHeader(request, token());
 
   return next(authorizedRequest).pipe(
     tap(handleResponse),
-    catchError((error) => handleError(error, authService, router))
+    catchError((error) => handleError(error, authService(), router()))
   );
 };
 
