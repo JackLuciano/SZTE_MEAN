@@ -22,6 +22,15 @@ router.get('/', async (req: express.Request, res: express.Response) => {
     }
 });
 
+router.get('/my-items', middleware, async (req: express.Request, res: express.Response) => {
+    try {
+        const items: Item[] = await Item.getAllItemsByOwner((req as any).user.userId);
+        res.json(items);
+    } catch (error) {
+        handleError(res, 500, 'Failed to fetch items');
+    }
+});
+
 router.get('/:id', async (req: express.Request, res: express.Response) => {
     try {
         const item: Item | null = await Item.findById(req.params.id);
