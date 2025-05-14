@@ -24,6 +24,14 @@ const convertUserToResponse = (user: User) => ({
     role: user.role,
 });
 
+const convertUserToUserInformationResponse = (user: User) => ({
+    _id: user._id,
+    firstName: user.firstName,
+    secondName: user.secondName,
+    profilePicture: user.profilePicture,
+    email: user.email,
+})
+
 router.post('/login', alreadyLoggedInMiddleware, async (req: express.Request, res: express.Response) => {
     try {
         const { username, password } = req.body;
@@ -92,6 +100,21 @@ router.get('/verify', middleware, async (req: express.Request, res: express.Resp
         res.status(200).json({ message: 'Token is valid.', user: convertUserToResponse(user) });
     } catch (error: any) {
         console.error('Error during token verification:', error);
+        handleError(res, 500, 'Internal server error.');
+    }
+});
+
+router.get('/user/:id', async (req: express.Request, res: express.Response) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return handleError(res, 404, 'User not found.');
+        }
+
+        res.status(200).json(convertUserToUserInformationResponse(user));
+    } catch (error: any) {
+        console.error('Error during user retrieval:', error);
         handleError(res, 500, 'Internal server error.');
     }
 });
