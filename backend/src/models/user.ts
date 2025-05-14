@@ -133,9 +133,9 @@ export class User {
         if (username.length > 20) return 'Username must be at most 20 characters long.';
         if (!firstName) return 'First name is required.';
         if (!secondName) return 'Second name is required.';
-        if (!/^[a-zA-Z0-9]+$/.test(username)) return 'Username can only contain letters and numbers.';
-        if (!/^[a-zA-Z]+$/.test(firstName)) return 'First name can only contain letters.';
-        if (!/^[a-zA-Z]+$/.test(secondName)) return 'Second name can only contain letters.';
+        // if (!/^[a-zA-Z0-9]+$/.test(username)) return 'Username can only contain letters and numbers.';
+        // if (!/^[a-zA-Z]+$/.test(firstName)) return 'First name can only contain letters.';
+        // if (!/^[a-zA-Z]+$/.test(secondName)) return 'Second name can only contain letters.';
         if (firstName.length < 5) return 'First name must be at least 5 characters long.';
         if (firstName.length > 30) return 'First name must be at most 30 characters long.';
         if (secondName.length < 5) return 'Second name must be at least 5 characters long.';
@@ -154,10 +154,10 @@ export class User {
     private static saveProfilePicture(picture: UploadedFile, userId: ObjectId): string {
         const extension = path.extname(picture.name);
         const fileName = `${userId}${extension}`;
-        const uploadPath = path.join(__dirname, '../uploads/profile', fileName);
+        const uploadPath = path.join(__dirname, '../uploads/', fileName);
 
-        if (!fs.existsSync(path.join(__dirname, '../uploads/profile'))) {
-            fs.mkdirSync(path.join(__dirname, '../uploads/profile'));
+        if (!fs.existsSync(path.join(__dirname, '../uploads/'))) {
+            fs.mkdirSync(path.join(__dirname, '../uploads/'));
         }
 
         picture.mv(uploadPath);
