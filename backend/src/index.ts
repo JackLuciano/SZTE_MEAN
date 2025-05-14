@@ -9,6 +9,7 @@ import itemsRoute from './routes/api/items';
 import messagesRoute from './routes/api/messages';
 import logRoute from './routes/api/logs';
 import profileRoute from './routes/api/profile';
+import imagesRoute from './routes/api/images';
 
 const registerRoutes = () => {
     const routes = [
@@ -20,6 +21,7 @@ const registerRoutes = () => {
         { path: '/api/profile/', handler: profileRoute },
         { path: '/categories', handler: categoriesRoute },
         { path: '/items', handler: itemsRoute },
+        { path: '/images', handler: imagesRoute},
     ];
 
     routes.forEach(({ path, handler }) => app.use(path, handler));
