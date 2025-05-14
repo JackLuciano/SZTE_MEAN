@@ -1,4 +1,4 @@
-import { Db, DeleteResult, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { getDatabase } from '../db';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';

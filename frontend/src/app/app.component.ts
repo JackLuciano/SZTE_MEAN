@@ -2,7 +2,6 @@ import { Component, OnInit, signal, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 
 import { ServerStatusService } from './services/server-status.service';
 import { AuthService } from './services/auth.service';

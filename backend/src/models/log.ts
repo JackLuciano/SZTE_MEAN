@@ -1,4 +1,4 @@
-import { Db, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 import { LogType } from "../data/logTypes";
 import { getDatabase } from "../db";
 

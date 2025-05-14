@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit {
       { name: '👤 My profile', /*routerLink: '/my-profile'*/ click: () => {
         InfoboxUtil.showMessage({
           message: "WORK IN PROGRESS",
-          type: 'error',
+          type: 'info',
           duration: 3000
         })
       }, show: () => this.isAuthenticated() },

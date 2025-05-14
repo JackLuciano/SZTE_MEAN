@@ -63,6 +63,17 @@
   border-radius: 12px;
   line-height: 1.6;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+  .edit {
+    color: #4caf50;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #66bb6a;
+    }
+  }
 }
 
 .name p {

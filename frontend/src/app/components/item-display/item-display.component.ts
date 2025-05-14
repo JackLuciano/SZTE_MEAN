@@ -26,6 +26,7 @@ export class ItemDisplayComponent implements OnInit {
   user = signal<User | null>(null);
   seller = signal<User | null>(null);
   sellerProfilePicture = signal<string | null>(null);
+  canChange = signal(false);
 
   constructor(
     private route : ActivatedRoute,
@@ -68,9 +69,7 @@ export class ItemDisplayComponent implements OnInit {
   }
 
   private fetchSeller(ownerId: string) : void {
-    this.httpClient.get<User>(getAPIUrl(`auth/user/${ownerId}`)).subscribe({
-      next: user => this.handleSellerResponse(user),
-    });
+    this.httpClient.get<User>(getAPIUrl(`auth/user/${ownerId}`)).subscribe(user => this.handleSellerResponse(user));
   }
 
   private handleSellerResponse(user: User) : void {
@@ -80,9 +79,8 @@ export class ItemDisplayComponent implements OnInit {
     if (profilePicture) {
       const imageId = profilePicture.split('/').pop();
       this.httpClient.get(getAPIUrl(`images/profile/${imageId}`), { responseType: 'blob' })
-        .subscribe({
-          next: blob => this.sellerProfilePicture.set(URL.createObjectURL(blob)),
-      });
+        .subscribe(blob => this.sellerProfilePicture.set(URL.createObjectURL(blob)),
+      );
     }
   }
 
@@ -92,6 +90,11 @@ export class ItemDisplayComponent implements OnInit {
     this.fetchSeller(item.ownerId);
 
     this.setupButtons();
+
+    const user = this.user();
+    if (user) {
+      this.canChange.set(user.userId === item.ownerId || user.role === 'admin')
+    }
   }
 
   private setupButtons() : void {
@@ -101,7 +104,7 @@ export class ItemDisplayComponent implements OnInit {
       const isSold = item.isSold;
       const isDeleted = item.isDeleted;
       if (!isSold && !isDeleted) {
-        this.buttons.set(user.userId === item.ownerId
+        this.buttons.set(user.userId === item.ownerId || user.role === 'admin'
         ? this.getOwnerButtons()
         : this.getDefaultButtons());
       }
@@ -205,4 +208,8 @@ export class ItemDisplayComponent implements OnInit {
 
     this.router.navigate(['/']);
   }
+
+  // onEdit(name: string): void {
+    
+  // }
 }

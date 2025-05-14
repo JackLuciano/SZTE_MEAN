@@ -127,9 +127,14 @@ export class NewItemComponent implements OnInit {
   }
 
   private displayMessage(message: string) : void {
-    this.message.set(message);
-    setTimeout(() => {
-      this.message.set(null);
-    }, 3000);
+    // this.message.set(message);
+    // setTimeout(() => {
+    //   this.message.set(null);
+    // }, 3000);
+    InfoboxUtil.showMessage({
+      message: message,
+      type: 'error',
+      duration: 3000,
+    });
   }
 }

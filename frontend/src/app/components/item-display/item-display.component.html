@@ -14,17 +14,35 @@
                 <div class="name">
                     <div class="background">
                         <p>{{ item()!.name }}</p>
+
+                        <!-- @if (canChange()) {
+                            <button class="edit" (click)="onEdit('name')">
+                                <i class="icon">✏️</i>
+                            </button>
+                        } -->
                     </div>
                 </div>
                 <div class="description">
                     <div class="background">
                         <p>{{ item()!.description }}</p>
+
+                        <!-- @if (canChange()) {
+                            <button class="edit" (click)="onEdit('description')">
+                                <i class="icon">✏️</i>
+                            </button>
+                        } -->
                     </div>
                 </div>
             </div>
             <div class="price">
                 <div class="background">
                     <p>${{ item()!.price }}</p>
+
+                    <!-- @if (canChange()) {
+                        <button class="edit" (click)="onEdit('price')">
+                            <i class="icon">✏️</i>
+                        </button>
+                    } -->
                 </div>
             </div>
             <div class="tags">
