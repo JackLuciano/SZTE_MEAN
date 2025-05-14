@@ -34,9 +34,41 @@
                 <span class="tag">Category: {{ item()!.category.name }}</span>
                 <span class="tag">Location: {{ item()!.location }}</span>
             </div>
-            @if (this.isAuthenticated()) {
+            <!-- @if (seller()) {
+                <div class="seller">
+                    <div class="background">
+                        <div class="profile">
+                        <img
+                            [src]="'https://p1.liveauctioneers.com/dist/images/placeholder.jpg'"
+                            alt="Seller image"
+                            class="img"
+                        />
+                        <div class="name">
+                            {{ seller()?.firstName }} {{ seller()?.secondName }}
+                        </div>
+                        </div>
+
+                        <div class="details">
+                            <div class="row">
+                                <span class="label">Full Name:</span>
+                                <span class="value">{{ seller()?.firstName }} {{ seller()?.secondName }}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">Email:</span>
+                                <span class="value">{{ seller()?.email || 'N/A' }}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">Online status:</span>
+                                <span class="value">{{ seller()?.onlineStatus ? 'Online' : 'Offline' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            } -->
+
+            @if (isAuthenticated()) {
                 <div class="buttons">
-                    @for (button of this.buttons(); track button) {
+                    @for (button of buttons(); track button) {
                         <button class="{{ button.class }}" (click)="button.click()">
                             <i class="icon">{{ button.icon }}</i>
                             <span>{{ button.name }}</span>

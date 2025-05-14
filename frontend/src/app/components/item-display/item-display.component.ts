@@ -24,6 +24,7 @@ export class ItemDisplayComponent implements OnInit {
   buttons = signal<any[]>([]);
   isAuthenticated = signal(false);
   user = signal<User | null>(null);
+  seller = signal<User | null>(null);
 
   constructor(
     private route : ActivatedRoute,
@@ -65,8 +66,21 @@ export class ItemDisplayComponent implements OnInit {
     });
   }
 
+  private fetchSeller(ownerId: string) : void {
+    this.httpClient.get<User>(getAPIUrl(`auth/user/${ownerId}`)).subscribe({
+      next: user => this.handleSellerResponse(user),
+    });
+  }
+
+  private handleSellerResponse(user: User) : void {
+    this.seller.set(User.fromJson(user));
+  }
+
   private handleItemResponse(item : Item) : void {
     this.item.set(new Item(item));
+
+    this.fetchSeller(item.ownerId);
+
     this.setupButtons();
   }
 
@@ -81,7 +95,6 @@ export class ItemDisplayComponent implements OnInit {
         ? this.getOwnerButtons()
         : this.getDefaultButtons());
       }
-
     }
   }
 
