@@ -1,24 +1,30 @@
 export class User {
-    userId : string;
-    username : string;
-    email : string;
-    firstName : string;
-    secondName : string;
-    profilePicture : string;
-    onlineStatus : boolean;
-    balance : number;
-    role : string = 'user';
+    userId: string;
+    
+    firstName: string;
+    secondName: string;
+    profilePicture: string;
+
+    username?: string;
+    email?: string;
+    balance?: number;
+
+    onlineStatus?: boolean;
+    role: string = 'user';
 
     constructor(
-        userId : string,
-        username : string,
-        email : string,
-        firstName : string,
-        secondName : string,
-        profilePicture : string,
-        onlineStatus : boolean,
-        balance : number,
-        role : string = 'user'
+        userId: string,
+
+        firstName: string,
+        secondName: string,
+        profilePicture: string,
+
+        username?: string,
+        email?: string,
+        balance?: number,
+
+        onlineStatus?: boolean,
+        role: string = 'user'
     ) {
         this.userId = userId;
         this.username = username;
@@ -32,15 +38,16 @@ export class User {
     }
 
     static fromJson(json : any) : User {
+        console.log(json._id)
         return new User(
             json._id,
-            json.username,
-            json.email,
             json.firstName,
             json.secondName,
             json.profilePicture,
-            json.onlineStatus,
+            json.username,
+            json.email,
             json.balance,
+            json.onlineStatus,
             json.role
         );
     }
