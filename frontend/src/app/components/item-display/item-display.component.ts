@@ -25,6 +25,7 @@ export class ItemDisplayComponent implements OnInit {
   isAuthenticated = signal(false);
   user = signal<User | null>(null);
   seller = signal<User | null>(null);
+  sellerProfilePicture = signal<string | null>(null);
 
   constructor(
     private route : ActivatedRoute,
@@ -74,6 +75,15 @@ export class ItemDisplayComponent implements OnInit {
 
   private handleSellerResponse(user: User) : void {
     this.seller.set(User.fromJson(user));
+
+    const profilePicture = user.profilePicture;
+    if (profilePicture) {
+      const imageId = profilePicture.split('/').pop();
+      this.httpClient.get(getAPIUrl(`images/profile/${imageId}`), { responseType: 'blob' })
+        .subscribe({
+          next: blob => this.sellerProfilePicture.set(URL.createObjectURL(blob)),
+      });
+    }
   }
 
   private handleItemResponse(item : Item) : void {
