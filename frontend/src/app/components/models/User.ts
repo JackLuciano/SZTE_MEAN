@@ -38,7 +38,6 @@ export class User {
     }
 
     static fromJson(json : any) : User {
-        console.log(json._id)
         return new User(
             json._id,
             json.firstName,
