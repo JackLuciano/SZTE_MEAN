@@ -67,7 +67,12 @@ export class Item {
     }
 
     static async getAllItems(): Promise<Item[]> {
-        return this.findByField('isDeleted', false);
+        const db = getDatabase();
+        if (!db) throw new Error('Database connection not available');
+
+        const items = await db.collection('items').find({ isDeleted: false, isSold: false }).toArray();
+
+        return items.map(this.mapToItem);
     }
 
     private static async findByField(field: string, value: any): Promise<Item[]> {
