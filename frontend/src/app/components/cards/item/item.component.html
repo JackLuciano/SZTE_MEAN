@@ -4,8 +4,12 @@
         <h3>{{ item!.name }}</h3>
         <p>Price: <span class="price">${{ item!.price }}</span></p>
         <p>Location: {{ item!.location }}</p>
-        @if (myItem) {
-            <p style="color: rgb(0, 128, 0);"><br><b>Your item</b></p>
+        @if (myItem && !deletedItem) {
+            @if (item!.isSold) {
+                <p style="color: rgb(0, 128, 0);"><br><b>Your item</b></p>
+            } @else {
+                <p style="color: rgb(156, 85, 18);"><br><b>Sold</b></p>
+            }
         }
         @if (boughtItem) {
             <p style="color: rgb(50, 50, 255);"><br><b>Item bought</b></p>
