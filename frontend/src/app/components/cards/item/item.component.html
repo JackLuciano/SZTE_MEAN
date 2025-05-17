@@ -6,9 +6,9 @@
         <p>Location: {{ item!.location }}</p>
         @if (myItem && !deletedItem) {
             @if (item!.isSold) {
-                <p style="color: rgb(0, 128, 0);"><br><b>Your item</b></p>
-            } @else {
                 <p style="color: rgb(156, 85, 18);"><br><b>Sold</b></p>
+            } @else {
+                <p style="color: rgb(0, 128, 0);"><br><b>Your item</b></p>
             }
         }
         @if (boughtItem) {

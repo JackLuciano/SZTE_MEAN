@@ -6,7 +6,7 @@ import { User } from '../components/models/user';
 })
 export class AuthService {
   private token = signal<string | null>(localStorage.getItem('token'));
-  private userSignalInternal: User | null = null;
+  private userSignalInternal = signal<User | null>(null);
 
   constructor() {
     effect(() => {
@@ -19,7 +19,7 @@ export class AuthService {
     });
   }
 
-  userSignal = computed(() => this.userSignalInternal);
+  userSignal = computed(() => this.userSignalInternal());
   isAuthenticated = computed(() => {
     const tokenValue = this.token();
     return !!tokenValue && tokenValue.trim() !== '';
@@ -44,7 +44,7 @@ export class AuthService {
         : userData;
 
     const user = parsedUser ? User.fromJson(parsedUser) : null;
-    this.userSignalInternal = user;
+    this.userSignalInternal.set(user);
 
     if (!user) {
       this.logout();
@@ -54,6 +54,6 @@ export class AuthService {
   }
 
   private clearUser(): void {
-    this.userSignalInternal = null;
+    this.userSignalInternal.set(null);
   }
 }

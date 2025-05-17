@@ -113,7 +113,13 @@ export class ItemDisplayComponent implements OnInit {
 
   private getDefaultButtons() : any[] {
     return [
-      { icon: "✉️", class: "message", name: "Message the seller", click: () => {} },
+      { icon: "✉️", class: "message", name: "Message the seller", click: () => {
+        InfoboxUtil.showMessage({
+          message: "WORK IN PROGRESS",
+          type: 'info',
+          duration: 3000
+        })
+      } },
       { icon: "🛒", class: "buy", name: "Buy now", click: () => this.confirmBuy() }
     ];
   }
