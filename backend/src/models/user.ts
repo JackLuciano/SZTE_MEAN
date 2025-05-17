@@ -100,6 +100,7 @@ export class User {
             firstName,
             secondName,
             profilePicture: fileName ? `/uploads/${fileName}` : '',
+            balance: 1000,
         });
 
         await db?.collection('users').insertOne(user);
