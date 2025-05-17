@@ -1,0 +1,1041 @@
+[
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602ef"
+    },
+    "name": "HD Webcam",
+    "description": "1080p resolution with built-in microphone for video calls.",
+    "price": 45,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-04T16:30:00Z"
+    },
+    "category": "electronics",
+    "lastUpdated": {
+      "$date": "2025-05-04T16:30:00Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Pécs",
+    "tags": [
+      "camera",
+      "home office"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602ee"
+    },
+    "name": "Portable Charger 10000mAh",
+    "description": "Compact power bank with fast charging for phones and tablets.",
+    "price": 25,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-03T14:45:10Z"
+    },
+    "category": "electronics",
+    "lastUpdated": {
+      "$date": "2025-05-03T14:45:10Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Szeged",
+    "tags": [
+      "battery",
+      "travel"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602ec"
+    },
+    "name": "Wireless Bluetooth Earbuds",
+    "description": "Premium noise-cancelling earbuds with 20hr battery life. Includes charging case.",
+    "price": 79,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-01T09:15:22Z"
+    },
+    "category": "electronics",
+    "lastUpdated": {
+      "$date": "2025-05-01T09:15:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Budapest",
+    "tags": [
+      "audio",
+      "wireless"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602ed"
+    },
+    "name": "Smartphone Stand",
+    "description": "Adjustable phone holder for desks, compatible with all smartphones.",
+    "price": 12,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-02T11:20:33Z"
+    },
+    "category": "electronics",
+    "lastUpdated": {
+      "$date": "2025-05-02T11:20:33Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Debrecen",
+    "tags": [
+      "accessory"
+    ],
+    "isSold": false,
+    "isDeleted": true
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f0"
+    },
+    "name": "Wireless Keyboard",
+    "description": "Slim design with quiet keys and 2-year battery life.",
+    "price": 35,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-05T10:10:10Z"
+    },
+    "category": "electronics",
+    "lastUpdated": {
+      "$date": "2025-05-05T10:10:10Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Győr",
+    "tags": [
+      "computer",
+      "accessory"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f5"
+    },
+    "name": "Leather Belt",
+    "description": "Genuine leather belt, brown, adjustable up to 38\" waist.",
+    "price": 18,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-10T18:25:15Z"
+    },
+    "category": "clothing",
+    "lastUpdated": {
+      "$date": "2025-05-10T18:25:15Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Kecskemét",
+    "tags": [
+      "men",
+      "accessory"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f1"
+    },
+    "name": "Men's Denim Jacket",
+    "description": "Classic blue denim jacket, size M, lightly used.",
+    "price": 40,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-06T12:25:18Z"
+    },
+    "category": "clothing",
+    "lastUpdated": {
+      "$date": "2025-05-06T12:25:18Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Budapest",
+    "tags": [
+      "men",
+      "casual"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f2"
+    },
+    "name": "Women's Winter Boots",
+    "description": "Waterproof ankle boots, size 38, excellent condition.",
+    "price": 55,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-07T13:40:05Z"
+    },
+    "category": "clothing",
+    "lastUpdated": {
+      "$date": "2025-05-07T13:40:05Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Miskolc",
+    "tags": [
+      "footwear",
+      "winter"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f3"
+    },
+    "name": "Unisex Hoodie",
+    "description": "Black cotton hoodie with front pocket, size L.",
+    "price": 22,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-08T15:55:42Z"
+    },
+    "category": "clothing",
+    "lastUpdated": {
+      "$date": "2025-05-08T15:55:42Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Székesfehérvár",
+    "tags": [
+      "casual",
+      "sweatshirt"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f4"
+    },
+    "name": "Silk Scarf",
+    "description": "Handmade floral pattern scarf, 100% silk.",
+    "price": 28,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-09T17:10:30Z"
+    },
+    "category": "clothing",
+    "lastUpdated": {
+      "$date": "2025-05-09T17:10:30Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Nyíregyháza",
+    "tags": [
+      "accessory",
+      "women"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f9"
+    },
+    "name": "Throw Pillow Set",
+    "description": "Set of 2 decorative pillows, 45x45cm, floral pattern.",
+    "price": 22,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-14T16:30:55Z"
+    },
+    "category": "home",
+    "lastUpdated": {
+      "$date": "2025-05-14T16:30:55Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Békéscsaba",
+    "tags": [
+      "living room",
+      "textile"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f6"
+    },
+    "name": "Ceramic Dinner Set",
+    "description": "Set of 6 plates, 6 bowls, and 6 mugs in white ceramic.",
+    "price": 65,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-11T10:45:22Z"
+    },
+    "category": "home",
+    "lastUpdated": {
+      "$date": "2025-05-11T10:45:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Szombathely",
+    "tags": [
+      "kitchen",
+      "tableware"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f8"
+    },
+    "name": "Wall Mirror",
+    "description": "Round decorative mirror, 60cm diameter, with wooden frame.",
+    "price": 38,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-13T14:15:44Z"
+    },
+    "category": "home",
+    "lastUpdated": {
+      "$date": "2025-05-13T14:15:44Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Kaposvár",
+    "tags": [
+      "decor",
+      "bathroom"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602fa"
+    },
+    "name": "Cutlery Set",
+    "description": "Stainless steel 24-piece cutlery set in presentation box.",
+    "price": 32,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-15T18:45:11Z"
+    },
+    "category": "home",
+    "lastUpdated": {
+      "$date": "2025-05-15T18:45:11Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Zalaegerszeg",
+    "tags": [
+      "kitchen",
+      "utensils"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602f7"
+    },
+    "name": "Floor Lamp",
+    "description": "Modern standing lamp with adjustable brightness, 180cm tall.",
+    "price": 45,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-12T12:00:33Z"
+    },
+    "category": "home",
+    "lastUpdated": {
+      "$date": "2025-05-12T12:00:33Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Veszprém",
+    "tags": [
+      "lighting",
+      "living room"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602fd"
+    },
+    "name": "Bicycle Helmet",
+    "description": "Adjustable adult helmet with ventilation, meets safety standards.",
+    "price": 35,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-18T13:40:44Z"
+    },
+    "category": "sports",
+    "lastUpdated": {
+      "$date": "2025-05-18T13:40:44Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Sopron",
+    "tags": [
+      "cycling",
+      "safety"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602fe"
+    },
+    "name": "Dumbbell Set",
+    "description": "Pair of 5kg rubber-coated dumbbells for home workouts.",
+    "price": 28,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-19T15:55:55Z"
+    },
+    "category": "sports",
+    "lastUpdated": {
+      "$date": "2025-05-19T15:55:55Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Nagykanizsa",
+    "tags": [
+      "weights",
+      "fitness"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602fb"
+    },
+    "name": "Yoga Mat",
+    "description": "Eco-friendly 6mm thick mat with carrying strap.",
+    "price": 25,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-16T09:10:22Z"
+    },
+    "category": "sports",
+    "lastUpdated": {
+      "$date": "2025-05-16T09:10:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Eger",
+    "tags": [
+      "fitness",
+      "exercise"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602ff"
+    },
+    "name": "Camping Tent",
+    "description": "2-person waterproof tent with carry bag, used once.",
+    "price": 85,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-20T18:10:11Z"
+    },
+    "category": "sports",
+    "lastUpdated": {
+      "$date": "2025-05-20T18:10:11Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Hódmezővásárhely",
+    "tags": [
+      "outdoor",
+      "hiking"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f602fc"
+    },
+    "name": "Running Shoes",
+    "description": "Men's size 42, lightweight with good cushioning.",
+    "price": 60,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-17T11:25:33Z"
+    },
+    "category": "sports",
+    "lastUpdated": {
+      "$date": "2025-05-17T11:25:33Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Dunaújváros",
+    "tags": [
+      "footwear",
+      "jogging"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60302"
+    },
+    "name": "Cookbook: Mediterranean Diet",
+    "description": "Hardcover with 150 healthy recipes and color photos.",
+    "price": 12,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-23T14:45:44Z"
+    },
+    "category": "books",
+    "lastUpdated": {
+      "$date": "2025-05-23T14:45:44Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Tatabánya",
+    "tags": [
+      "cooking",
+      "health"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60301"
+    },
+    "name": "Hungarian Phrasebook",
+    "description": "Compact travel phrasebook with pronunciation guide.",
+    "price": 6,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-22T12:30:33Z"
+    },
+    "category": "books",
+    "lastUpdated": {
+      "$date": "2025-05-22T12:30:33Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Szekszárd",
+    "tags": [
+      "language",
+      "travel"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60300"
+    },
+    "name": "The Great Gatsby",
+    "description": "Classic novel by F. Scott Fitzgerald, paperback, like new.",
+    "price": 8,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-21T10:15:22Z"
+    },
+    "category": "books",
+    "lastUpdated": {
+      "$date": "2025-05-21T10:15:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Salgótarján",
+    "tags": [
+      "fiction",
+      "literature"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60303"
+    },
+    "name": "Mystery Novel Collection",
+    "description": "3 books by Agatha Christie in one volume.",
+    "price": 15,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-24T17:00:55Z"
+    },
+    "category": "books",
+    "lastUpdated": {
+      "$date": "2025-05-24T17:00:55Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Érd",
+    "tags": [
+      "mystery",
+      "collection"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60304"
+    },
+    "name": "Children's Picture Book",
+    "description": "Colorful hardcover book about animals, for ages 3-6.",
+    "price": 5,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-25T19:15:11Z"
+    },
+    "category": "books",
+    "lastUpdated": {
+      "$date": "2025-05-25T19:15:11Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Szolnok",
+    "tags": [
+      "kids",
+      "educational"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60308"
+    },
+    "name": "Teddy Bear",
+    "description": "Soft plush bear, 40cm tall, perfect gift for children.",
+    "price": 12,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-29T16:05:55Z"
+    },
+    "category": "toys",
+    "lastUpdated": {
+      "$date": "2025-05-29T16:05:55Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Orosháza",
+    "tags": [
+      "plush",
+      "stuffed animal"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60306"
+    },
+    "name": "Board Game: Catan",
+    "description": "Complete family strategy game, all pieces present.",
+    "price": 28,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-27T11:35:33Z"
+    },
+    "category": "toys",
+    "lastUpdated": {
+      "$date": "2025-05-27T11:35:33Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Kiskunfélegyháza",
+    "tags": [
+      "family",
+      "strategy"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60307"
+    },
+    "name": "Remote Control Car",
+    "description": "1:24 scale RC car with 2.4GHz controller, requires 6 AA batteries.",
+    "price": 22,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-28T13:50:44Z"
+    },
+    "category": "toys",
+    "lastUpdated": {
+      "$date": "2025-05-28T13:50:44Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Pápa",
+    "tags": [
+      "electronic",
+      "vehicle"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60305"
+    },
+    "name": "LEGO Classic Brick Box",
+    "description": "790 pieces for creative building, original box included.",
+    "price": 35,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-26T09:20:22Z"
+    },
+    "category": "toys",
+    "lastUpdated": {
+      "$date": "2025-05-26T09:20:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Szentes",
+    "tags": [
+      "building",
+      "creative"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60309"
+    },
+    "name": "Jigsaw Puzzle (1000 pieces)",
+    "description": "Landscape puzzle of Hungarian countryside, complete in box.",
+    "price": 10,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-30T18:20:11Z"
+    },
+    "category": "toys",
+    "lastUpdated": {
+      "$date": "2025-05-30T18:20:11Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Kiskőrös",
+    "tags": [
+      "puzzle",
+      "family"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030a"
+    },
+    "name": "The Lord of the Rings Trilogy (Blu-ray)",
+    "description": "Extended editions in original packaging, excellent condition.",
+    "price": 35,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-05-31T10:25:22Z"
+    },
+    "category": "movies",
+    "lastUpdated": {
+      "$date": "2025-05-31T10:25:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Cegléd",
+    "tags": [
+      "fantasy",
+      "collection"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030e"
+    },
+    "name": "Action Movie Bundle",
+    "description": "3 recent action blockbusters on DVD, all region codes.",
+    "price": 15,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-04T19:25:11Z"
+    },
+    "category": "movies",
+    "lastUpdated": {
+      "$date": "2025-06-04T19:25:11Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Ajka",
+    "tags": [
+      "action",
+      "thriller"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030c"
+    },
+    "name": "Animated Film Collection",
+    "description": "3 popular animated movies for kids on Blu-ray.",
+    "price": 22,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-02T14:55:44Z"
+    },
+    "category": "movies",
+    "lastUpdated": {
+      "$date": "2025-06-02T14:55:44Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Gödöllő",
+    "tags": [
+      "animation",
+      "family"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030b"
+    },
+    "name": "Classic Comedy DVD Set",
+    "description": "5 classic comedies from the 90s in one box set.",
+    "price": 18,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-01T12:40:33Z"
+    },
+    "category": "movies",
+    "lastUpdated": {
+      "$date": "2025-06-01T12:40:33Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Vác",
+    "tags": [
+      "comedy",
+      "vintage"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030d"
+    },
+    "name": "Documentary: Planet Earth",
+    "description": "Complete BBC series on nature, 4-disc Blu-ray set.",
+    "price": 28,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-03T17:10:55Z"
+    },
+    "category": "movies",
+    "lastUpdated": {
+      "$date": "2025-06-03T17:10:55Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Szigetszentmiklós",
+    "tags": [
+      "nature",
+      "educational"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60311"
+    },
+    "name": "Queen Greatest Hits CD",
+    "description": "Original 1981 compilation, includes all classics.",
+    "price": 12,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-07T15:00:44Z"
+    },
+    "category": "music",
+    "lastUpdated": {
+      "$date": "2025-06-07T15:00:44Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Keszthely",
+    "tags": [
+      "classic rock",
+      "collection"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f6030f"
+    },
+    "name": "The Beatles - Abbey Road (Vinyl)",
+    "description": "Original 1969 pressing, good condition with minor sleeve wear.",
+    "price": 65,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-05T10:30:22Z"
+    },
+    "category": "music",
+    "lastUpdated": {
+      "$date": "2025-06-05T10:30:22Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Mosonmagyaróvár",
+    "tags": [
+      "vintage",
+      "rock"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60310"
+    },
+    "name": "Bluetooth Speaker",
+    "description": "Portable waterproof speaker with 12hr battery life.",
+    "price": 45,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-06T12:45:33Z"
+    },
+    "category": "music",
+    "lastUpdated": {
+      "$date": "2025-06-06T12:45:33Z"
+    },
+    "ownerId": {
+      "$oid": "68246230625fb5a266545ffb"
+    },
+    "location": "Kalocsa",
+    "tags": [
+      "portable",
+      "audio"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60312"
+    },
+    "name": "Record Player",
+    "description": "Basic turntable with built-in speakers, USB output.",
+    "price": 75,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-08T17:15:55Z"
+    },
+    "category": "music",
+    "lastUpdated": {
+      "$date": "2025-06-08T17:15:55Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Sárvár",
+    "tags": [
+      "vinyl",
+      "audio"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  },
+  {
+    "_id": {
+      "$oid": "661b365722d3a66d55f60313"
+    },
+    "name": "Jazz Compilation CD Box Set",
+    "description": "5 CDs featuring legendary jazz artists from 1950-1970.",
+    "price": 25,
+    "images": [],
+    "createdAt": {
+      "$date": "2025-06-09T19:30:11Z"
+    },
+    "category": "music",
+    "lastUpdated": {
+      "$date": "2025-06-09T19:30:11Z"
+    },
+    "ownerId": {
+      "$oid": "681c9798df3dc2430e4a2212"
+    },
+    "location": "Siófok",
+    "tags": [
+      "jazz",
+      "collection"
+    ],
+    "isSold": false,
+    "isDeleted": false
+  }
+]

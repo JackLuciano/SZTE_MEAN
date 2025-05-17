@@ -1,0 +1,34 @@
+[
+{
+  "_id": {
+    "$oid": "681c9798df3dc2430e4a2212"
+  },
+  "role": "user",
+  "username": "theJack",
+  "password": "$2b$10$//3/SVatJ2BMsTXi7uSi/uqZmp9Pn0mhS1F.dERy3Es1HxFR4HQFe",
+  "email": "jackfunc@gmail.com",
+  "createdAt": {
+    "$date": "2025-05-08T11:38:00.843Z"
+  },
+  "firstName": "Szabó",
+  "secondName": "Szabolcs",
+  "profilePicture": "/uploads/profile/681c9798df3dc2430e4a2212.png",
+  "balance": 9850
+},
+{
+  "_id": {
+    "$oid": "68246230625fb5a266545ffb"
+  },
+  "username": "theJack2",
+  "password": "$2b$10$pXa/7nz.VzQIC1Ms.2y8zetJOii7LWJfwVVHqqPNSyXOHmwpeJ8.u",
+  "email": "jackfunc2@gmail.com",
+  "createdAt": {
+    "$date": "2025-05-14T09:28:16.823Z"
+  },
+  "firstName": "Szabó2",
+  "secondName": "Szabolcs2",
+  "profilePicture": "/uploads/68246230625fb5a266545ffb.png",
+  "balance": 45,
+  "role": "user"
+}
+]
